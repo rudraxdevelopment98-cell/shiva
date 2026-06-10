@@ -20,6 +20,13 @@ dist/
 logs/
 *.log
 
+# Large media — keep these on the SSD / Releases / LFS, not in git history
+*.mp4
+*.mov
+*.zip
+media/
+secret.txt
+
 # Obsidian (keep notes, ignore local workspace state)
 .obsidian/workspace*
 .obsidian/cache
