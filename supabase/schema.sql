@@ -23,6 +23,7 @@ create table if not exists tasks (
   due        date,
   priority   text default 'Medium',
   status     text default 'To do',
+  phase      text default 'P0',
   created_at timestamptz not null default now()
 );
 

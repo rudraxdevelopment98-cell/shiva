@@ -13,6 +13,7 @@ function esc(s){return(s==null?"":String(s)).replace(/[&<>"']/g,c=>({"&":"&amp;"
 function avatarColor(name){let h=0;for(const c of (name||"?"))h=(h*31+c.charCodeAt(0))%AV.length;return AV[h]}
 function initials(name){return (name||"?").split(/\s+/).map(w=>w[0]).join("").slice(0,2).toUpperCase()}
 function me(){return state.users.find(u=>u.username===state.sessionUser)}
+window.shivaTasks=()=>state.tasks;
 function can(sec){const u=me();return u&&u.access.includes(sec)}
 function assigneeName(un){const u=state.users.find(x=>x.username===un);return u?u.name:un}
 function val(id){const e=document.getElementById(id);return e?e.value:""}
@@ -258,9 +259,10 @@ function openTaskModal(){
     <label class="field"><span>Description</span><input id="t-desc" placeholder="Short detail"></label>
     <div class="row"><label class="field"><span>Assign to</span><select id="t-assignee">${opts}</select></label>
       <label class="field"><span>Due date</span><input id="t-due" type="date" value="${date(1)}"></label></div>
-    <label class="field"><span>Priority</span><select id="t-pri"><option>Critical</option><option selected>High</option><option>Medium</option><option>Low</option></select></label>`,
+    <div class="row"><label class="field"><span>Priority</span><select id="t-pri"><option>Critical</option><option selected>High</option><option>Medium</option><option>Low</option></select></label>
+      <label class="field"><span>Phase</span><select id="t-phase"><option value="P0" selected>Phase 0</option><option value="P1">Phase 1</option><option value="P2">Phase 2</option><option value="P3">Phase 3</option></select></label></div>`,
     "Create task",async()=>{const title=val("t-title");if(!title)return alert("Title required");
-      await Store.createTask({title,desc:val("t-desc"),assignee:val("t-assignee"),due:val("t-due"),priority:val("t-pri")});
+      await Store.createTask({title,desc:val("t-desc"),assignee:val("t-assignee"),due:val("t-due"),priority:val("t-pri"),phase:val("t-phase")});
       await Store.addActivity("Created task: "+title);closeModal();reload()})}
 function openResearchModal(){
   modal("Add research entry",`<label class="field"><span>Title</span><input id="r-title" placeholder="Source / paper title"></label>

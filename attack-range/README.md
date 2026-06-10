@@ -14,8 +14,12 @@ grow it into a public benchmark later.
 | File | What it is |
 |---|---|
 | `benign_server.py` | Clean baseline server (Day 2) — `read_file` + `get_weather`. |
-| `poisoned_server.py` | **Attack #1: tool poisoning** (Day 3) — hidden instruction in a tool description. |
+| `poisoned_server.py` | **Attack #1: tool poisoning** — hidden instruction in a tool description. |
+| `drift_server.py` | **Attack #2: description drift / rug-pull** — description changes after trust. |
+| `escalation_server.py` | **Attack #3: cross-tool escalation** — one tool's output steers the next call (safe stub). |
 | `requirements.txt` | Just `mcp[cli]`. |
+
+Write-ups: [#1 poisoning](../docs/attacks/01-tool-poisoning.md) · [#2 drift](../docs/attacks/02-description-drift.md) · [#3 escalation](../docs/attacks/03-cross-tool-escalation.md)
 
 ## Quick start
 
@@ -68,6 +72,7 @@ add here becomes both a test case and public content.
 
 ## Roadmap for this folder
 
-- [ ] `drift_server.py` — description changes after first trust (rug-pull, attack #2)
-- [ ] `escalation_server.py` — one tool's output steers the next call (attack #3)
+- [x] `drift_server.py` — description changes after first trust (rug-pull, attack #2)
+- [x] `escalation_server.py` — one tool's output steers the next call (attack #3)
+- [ ] `credential_server.py` — exfiltrate a (decoy) OAuth token (attack #5)
 - [ ] A scoring harness: run any scanner/gateway against the range → detection-rate report

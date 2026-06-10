@@ -82,6 +82,7 @@ window.initCanvas=function(){
     d.innerHTML=`<div class="t"><span class="ic">${n.ic}</span>${n.t}</div>${n.s?`<div class="s">${n.s}</div>`:""}`;
     d.onmouseenter=()=>focus(n.id);d.onmouseleave=()=>{if(!sel)unfocus()};
     d.onclick=e=>{e.stopPropagation();openDetail(n)};stage.appendChild(d);});
+  applyLive();
   vp.onmousedown=e=>{drag=true;vp.classList.add("grab");sx=e.clientX;sy=e.clientY;c0={...cam}};
   window.addEventListener("mousemove",mv);window.addEventListener("mouseup",()=>{drag=false;vp.classList.remove("grab")});
   vp.onclick=e=>{if(e.target===vp||e.target===stage||e.target===svg)closeDetail()};
@@ -90,6 +91,20 @@ window.initCanvas=function(){
     cam.x=mx-wx*cam.z;cam.y=my-wy*cam.z;apply()};
   fit();
 };
+function applyLive(){
+  const tasks=(window.shivaTasks?window.shivaTasks():[])||[];
+  [["p0","P0"],["p1","P1"],["p2","P2"],["p3","P3"]].forEach(([id,ph])=>{
+    const node=document.querySelector(`.cv-node[data-id="${id}"]`);if(!node)return;
+    const list=tasks.filter(t=>(t.phase||"P0")===ph);
+    const done=list.filter(t=>t.status==="Done").length;
+    const pct=list.length?Math.round(done/list.length*100):0;
+    const live=document.createElement("div");live.className="cv-live";
+    live.innerHTML=list.length
+      ? `<div class="cv-live-bar"><i style="width:${pct}%"></i></div><span>${done}/${list.length} tasks · ${pct}%</span>`
+      : `<span style="opacity:.6">no tasks yet</span>`;
+    node.appendChild(live);
+  });
+}
 let drag=false,sx,sy,c0,sel=null;
 function mv(e){if(!drag)return;cam.x=c0.x+(e.clientX-sx);cam.y=c0.y+(e.clientY-sy);apply()}
 function apply(){const s=document.getElementById("cvstage");if(s)s.style.transform=`translate(${cam.x}px,${cam.y}px) scale(${cam.z})`}

@@ -38,9 +38,9 @@ const LocalStore={
     users:[{id:_uid(),name:"Kuldeep",username:"kuldeep",password:"Shiva@2026",role:"Owner",
       access:SECTIONS.map(s=>s.id),status:"Active",created:now}],
     tasks:[
-      {id:_uid(),title:"Install MCP SDKs (Python + TypeScript)",desc:"Day 1 of Phase 0",assignee:"kuldeep",due:_date(1),priority:"High",status:"To do",created:now},
-      {id:_uid(),title:"Build first MCP server (read_file tool)",desc:"Day 2 of Phase 0",assignee:"kuldeep",due:_date(2),priority:"High",status:"To do",created:now},
-      {id:_uid(),title:"Reproduce tool poisoning (attack #1)",desc:"Day 3 — the key demo",assignee:"kuldeep",due:_date(3),priority:"Critical",status:"To do",created:now}],
+      {id:_uid(),title:"Install MCP SDKs (Python + TypeScript)",desc:"Day 1 of Phase 0",assignee:"kuldeep",due:_date(1),priority:"High",status:"To do",phase:"P0",created:now},
+      {id:_uid(),title:"Build first MCP server (read_file tool)",desc:"Day 2 of Phase 0",assignee:"kuldeep",due:_date(2),priority:"High",status:"To do",phase:"P0",created:now},
+      {id:_uid(),title:"Reproduce tool poisoning (attack #1)",desc:"Day 3 — the key demo",assignee:"kuldeep",due:_date(3),priority:"Critical",status:"To do",phase:"P0",created:now}],
     docs:[],
     research:[{id:_uid(),title:"Simon Willison — MCP prompt injection",url:"https://simonwillison.net/tags/model-context-protocol/",category:"Reference",note:"Core read on why MCP has injection problems.",by:"kuldeep",date:now}],
     activity:[{id:_uid(),user:"system",action:"Portal initialised",time:now}]};
@@ -94,7 +94,7 @@ function SupabaseStore(url,key){
         sb.from("research").select("*").order("created_at",{ascending:false}),
         sb.from("activity").select("*").order("created_at",{ascending:false}).limit(200)]);
       return{users:(u.data||[]).map(rowU),
-        tasks:(t.data||[]).map(x=>({id:x.id,title:x.title,desc:x.descr,assignee:x.assignee,due:x.due,priority:x.priority,status:x.status})),
+        tasks:(t.data||[]).map(x=>({id:x.id,title:x.title,desc:x.descr,assignee:x.assignee,due:x.due,priority:x.priority,status:x.status,phase:x.phase||"P0"})),
         docs:(d.data||[]).map(x=>({id:x.id,name:x.name,category:x.category,size:x.size,data:x.url,by:x.uploaded_by,date:new Date(x.created_at).getTime()})),
         research:(r.data||[]).map(x=>({id:x.id,title:x.title,url:x.url,category:x.category,note:x.note,by:x.created_by,date:new Date(x.created_at).getTime()})),
         activity:(a.data||[]).map(x=>({id:x.id,user:x.actor,action:x.action,time:new Date(x.created_at).getTime()}))};},
@@ -106,7 +106,7 @@ function SupabaseStore(url,key){
     async deleteUser(id){await sb.functions.invoke("admin-create-user",{body:{deleteId:id}})},
     async updateSelf(patch){const p={};if(patch.name)p.name=patch.name;if(p.name)await sb.from("profiles").update(p).eq("id",_session.user.id);
       if(patch.password)await sb.auth.updateUser({password:patch.password});if(patch.name&&_profile)_profile.name=patch.name;return _profile},
-    async createTask(o){await sb.from("tasks").insert({title:o.title,descr:o.desc,assignee:o.assignee,due:o.due,priority:o.priority,status:"To do"})},
+    async createTask(o){await sb.from("tasks").insert({title:o.title,descr:o.desc,assignee:o.assignee,due:o.due,priority:o.priority,status:"To do",phase:o.phase||"P0"})},
     async updateTask(id,patch){const p={};["status","priority","due"].forEach(k=>{if(patch[k]!=null)p[k]=patch[k]});await sb.from("tasks").update(p).eq("id",id)},
     async deleteTask(id){await sb.from("tasks").delete().eq("id",id)},
     async createDoc(o){let url=o.data;
