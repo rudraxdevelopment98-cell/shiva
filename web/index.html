@@ -14,6 +14,7 @@
   <!-- Login -->
   <div id="login">
     <div class="card">
+      <span class="mode local" id="li-mode">● LOCAL</span>
       <div class="logo">☩</div>
       <h1>Shiva Project Portal</h1>
       <p class="sub">Sign in to your account</p>
@@ -32,6 +33,10 @@
   <!-- App shell (rendered by app.js) -->
   <div id="app"></div>
 
+  <!-- Supabase JS (only used if config.js has keys; harmless otherwise) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="store.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

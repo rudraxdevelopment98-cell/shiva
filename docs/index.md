@@ -20,6 +20,7 @@ This is the **control room** — every chart and tracker for the project, all li
 | **[Evidence / claims](evidence.md)** | Are our market claims true | Sourced living doc |
 | **[How to view](how-to-view.md)** | Tooling setup (free) | Guide |
 | **[Mac + SSD setup](setup-mac.md)** | Run it all off an external SSD + GitHub | Guide |
+| **[Supabase setup](supabase-setup.md)** | Make the portal real (multi-user auth + DB) | Guide |
 
 ## Status snapshot
 

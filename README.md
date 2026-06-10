@@ -26,6 +26,7 @@ Everything about the project — goal, where we are, what's next, what we're bui
 | **[Evidence / claims](docs/evidence.md)** | Are our market claims actually true | Sourced living doc |
 | **[How to view these charts](docs/how-to-view.md)** | Tooling setup (free) | Guide |
 | **[Mac + SSD setup](docs/setup-mac.md)** | Run it all off an external SSD + GitHub | Guide |
+| **[Supabase setup](docs/supabase-setup.md)** | Make the portal real (multi-user auth + DB) | Guide |
 
 ---
 
