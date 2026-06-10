@@ -18,6 +18,7 @@ Everything about the project — goal, where we are, what's next, what we're bui
 | **[Learning tracker](docs/learning.md)** | What do I need to learn, what's done | Mindmap + checklist |
 | **[Architecture](docs/architecture.md)** | What are we building | System flowcharts |
 | **[Threat model](docs/threat-model.md)** | What are we defending against | Attack flow + MITRE/OWASP map |
+| **[Platform](docs/platform.md)** | The hosted app we'll build (accounts, admin, access control) | Mindmap + RBAC chart |
 | **[Improvements](docs/improvements.md)** | How to make the plan sharper | Notes + decision log |
 | **[Evidence / claims](docs/evidence.md)** | Are our market claims actually true | Sourced living doc |
 | **[How to view these charts](docs/how-to-view.md)** | Tooling setup (free) | Guide |

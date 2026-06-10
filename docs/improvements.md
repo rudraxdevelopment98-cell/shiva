@@ -126,6 +126,7 @@ Append decisions here so future-you knows *why*. Format: date · decision · rat
 |---|---|---|
 | 2026-06-10 | Use Markdown + Mermaid in-repo (+ Obsidian) for all charts | Free, linked, version-controlled, renders on GitHub | 
 | 2026-06-10 | Repo codename **Shiva**; public name TBD | Avoid Sentry trademark clash | 
+| 2026-06-10 | Hosted project **platform** is a planned component, staged (GitHub→Pages→custom auth/RBAC) | Avoid the "build tooling instead of product" trap during Phase 0; see [platform.md](platform.md#when-to-build-it-staged) |
 | _add next_ | | |
 
 [← back to control room](../README.md)
