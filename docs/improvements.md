@@ -1,6 +1,6 @@
 # Improvements — how to make the plan sharper
 
-[← back to control room](../README.md)
+[← back to control room](index.md)
 
 Your plan is strong: right problem, right timing, fits your constraints, honest about risk. These are additions that raise the **interesting** and the **useful**, ordered by leverage. Each is a suggestion, not a rewrite.
 
@@ -63,7 +63,7 @@ The plan mentions FP-rate late. Define the metrics *now* so every phase is judge
 - **Gateway latency overhead** (ms added per call) — adoption killer if high.
 - **Coverage** — # of distinct attack classes.
 
-Put these on a dashboard in [progress.md](progress.md#signals-to-watch). Numbers turn write-ups into credibility.
+Put these on a dashboard in [progress.md](progress.md#signals-to-watch-your-real-metrics). Numbers turn write-ups into credibility.
 
 ---
 
@@ -129,4 +129,4 @@ Append decisions here so future-you knows *why*. Format: date · decision · rat
 | 2026-06-10 | Hosted project **platform** is a planned component, staged (GitHub→Pages→custom auth/RBAC) | Avoid the "build tooling instead of product" trap during Phase 0; see [platform.md](platform.md#when-to-build-it-staged) |
 | _add next_ | | |
 
-[← back to control room](../README.md)
+[← back to control room](index.md)

@@ -24,6 +24,9 @@ logs/
 .obsidian/workspace*
 .obsidian/cache
 
+# MkDocs build output
+site/
+
 # OS / editor
 .DS_Store
 .idea/

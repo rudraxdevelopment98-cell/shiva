@@ -1,6 +1,6 @@
 # Overview — the whole project on one screen
 
-[← back to control room](../README.md)
+[← back to control room](index.md)
 
 ## The mindmap
 

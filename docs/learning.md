@@ -1,6 +1,6 @@
 # Learning tracker — what to learn, what's done
 
-[← back to control room](../README.md)
+[← back to control room](index.md)
 
 > Your background already covers a lot (SOC / MSc). This tracks only the **gaps to close** plus where each gap plugs into the product.
 

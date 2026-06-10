@@ -6,6 +6,9 @@
 
 ---
 
+> 🌐 **Live site:** once GitHub Pages is enabled (Settings → Pages → Source: *GitHub Actions*), all charts are published at
+> **https://rudraxdevelopment98-cell.github.io/shiva/** — one clean link, with nav + search. Built automatically on every push via [`.github/workflows/docs.yml`](.github/workflows/docs.yml).
+
 ## 🧭 This repo is the control room
 
 Everything about the project — goal, where we are, what's next, what we're building, what we're learning — lives here as **linked Markdown + Mermaid charts**. It renders automatically on GitHub, and you can open the same folder in **[Obsidian](docs/how-to-view.md)** for an interactive mindmap/graph view.

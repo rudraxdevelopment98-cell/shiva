@@ -1,6 +1,6 @@
 # Evidence / claims — the living "is this actually true" doc
 
-[← back to control room](../README.md)
+[← back to control room](index.md)
 
 > **Rule:** any market stat or factual claim that goes into a blog post, pitch, or the plan gets a row here first — with a **real source + date**. No source, no assertion. A wrong number in a security pitch costs credibility with the exact technical buyers you want.
 
@@ -32,4 +32,4 @@ Legend: ✅ verified · ❓ unverified · ⚠️ contradicted/dated
 
 > As of this repo's knowledge cutoff some 2026-dated items can't be auto-verified — that's exactly why they live here as **to-verify**, not as facts.
 
-[← back to control room](../README.md)
+[← back to control room](index.md)

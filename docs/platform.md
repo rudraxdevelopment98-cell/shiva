@@ -1,6 +1,6 @@
 # Platform — the hosted project command-center
 
-[← back to control room](../README.md)
+[← back to control room](index.md)
 
 > **Vision (Kuldeep):** turn this control room into our own **web platform** — where we view all the charts, plus user accounts, a user section, an admin section, and **role-based access** so collaborators only see/edit what they're granted. The chart structure lives inside it too.
 
@@ -132,4 +132,4 @@ flowchart LR
 
 See the [decision log](improvements.md#decision-log) for choices as they're made.
 
-[← back to control room](../README.md)
+[← back to control room](index.md)

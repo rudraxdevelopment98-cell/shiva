@@ -1,6 +1,6 @@
 # Progress board — where we are *right now*
 
-[← back to control room](../README.md)
+[← back to control room](index.md)
 
 > Update this on every meaningful step. This is the "you are here" map.
 
@@ -38,7 +38,7 @@ A live checklist — tick as you go (`[x]`).
 - [ ] **Day 2** — Build one trivial MCP server (e.g. a "read file" tool) + connect a client.
 - [ ] **Day 3** — Poison a tool description with a hidden instruction; confirm the agent obeys it.
 - [ ] **Day 4** — Create/commit the public test server + a short write-up of attack #1. *(repo already exists — just push attack #1)*
-- [ ] **Day 5** — Read the MCP threat-modelling papers + Simon Willison's MCP prompt-injection post; note against your own reproduction. ([sources](evidence.md#reading-list))
+- [ ] **Day 5** — Read the MCP threat-modelling papers + Simon Willison's MCP prompt-injection post; note against your own reproduction. ([sources](evidence.md#reading-list-phase-0))
 - [ ] **Day 6** — Sketch the scanner's first three checks on paper → drop into [architecture.md](architecture.md#scanner).
 - [ ] **Day 7** — Decision gate 0: am I in for Phase 1?
 

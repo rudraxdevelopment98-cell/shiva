@@ -1,6 +1,6 @@
 # How to view these charts (all free)
 
-[← back to control room](../README.md)
+[← back to control room](index.md)
 
 Everything here is **Markdown + [Mermaid](https://mermaid.js.org/)**. No app required, no account, nothing to pay for. Three ways to view, pick what you like.
 
@@ -41,4 +41,4 @@ Sketch/preview diagrams fast at the **[Mermaid Live Editor](https://mermaid.live
 ## Why this over Notion / Miro / Lucidchart?
 Those are fine but: free tiers are limited, charts live *outside* your code, and they're not version-controlled. Here, the charts live **next to the work**, evolve in git history, and render on the same GitHub everyone already sees. One source of truth.
 
-[← back to control room](../README.md)
+[← back to control room](index.md)

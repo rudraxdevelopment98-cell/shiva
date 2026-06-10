@@ -1,6 +1,6 @@
 # Threat model — what we're defending against
 
-[← back to control room](../README.md)
+[← back to control room](index.md)
 
 Frame the MCP attack surface the way you'd frame any system: STRIDE for enumeration, MITRE ATLAS + OWASP for shared language with buyers.
 

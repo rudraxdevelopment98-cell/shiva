@@ -1,6 +1,6 @@
 # Roadmap — where we're going, by when
 
-[← back to control room](../README.md)
+[← back to control room](index.md)
 
 ## Timeline (Gantt)
 

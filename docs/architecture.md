@@ -1,6 +1,6 @@
 # Architecture — what we're building
 
-[← back to control room](../README.md)
+[← back to control room](index.md)
 
 Three components, one growing system. Open-source funnel (Scanner + Gateway + Attack Range) feeds the paid Hosted layer.
 
@@ -92,6 +92,6 @@ flowchart TB
 | Gateway | **TypeScript/Node** (Go later for single binary) | MCP SDKs are first-class in TS |
 | Storage (local) | **SQLite / DuckDB**, JSON logs | No Kafka/Elastic on day one |
 | Sandboxing | **Docker** | Run untrusted servers safely |
-| Telemetry (stretch) | **OpenTelemetry GenAI semantic conventions** | Plugs straight into existing SIEM/SOC — see [improvements](improvements.md#5-emit-opentelemetry) |
+| Telemetry (stretch) | **OpenTelemetry GenAI semantic conventions** | Plugs straight into existing SIEM/SOC — see [improvements](improvements.md#5-emit-opentelemetry-genai-semantic-conventions) |
 
 Next: [threat model →](threat-model.md)
