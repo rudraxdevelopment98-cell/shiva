@@ -146,14 +146,19 @@ function viewProject(){
    </div>`;
 }
 function viewCanvas(){
-  const leg=[["Phase","#6d5efc"],["Build","#22d3ee"],["Hosted","#34d399"],["Threat","#fb7185"],["Platform","#a855f7"]];
-  return `<div class="page-h"><div><h1>Project Map</h1><p>The whole project as a linked structure — drag to pan, scroll to zoom, click any node.</p></div></div>
+  const branches=[["journey","Journey","#6d5efc"],["build","Build","#22d3ee"],["threats","Threats","#fb7185"],["platform","Platform","#a855f7"]];
+  return `<div class="page-h"><div><h1>Project Map</h1><p>The whole project as a living, linked structure — pan, zoom, search, filter branches, click nodes.</p></div>
+     <div class="actions">
+       <input id="cvsearch" placeholder="Search the map…" oninput="cvSearch(this.value)" style="width:190px">
+       <button class="btn sm" onclick="cvCollapseAll()">⊟ Collapse</button>
+       <button class="btn sm" onclick="cvExpandAll()">⊞ Expand</button></div></div>
    <div class="cv-wrap" id="cvwrap">
-     <div class="cv-legend">${leg.map(l=>`<span><i style="background:${l[1]}"></i>${l[0]}</span>`).join("")}</div>
+     <div class="cv-legend" id="cvlegend">
+       ${branches.map(b=>`<span class="cv-chip active" data-b="${b[0]}" onclick="cvToggleBranch('${b[0]}',this)"><i style="background:${b[2]}"></i>${b[1]}</span>`).join("")}
+       <span class="cv-chip static"><i style="background:#34d399"></i>Hosted</span></div>
      <div class="cv-vp" id="cvvp"><div class="cv-stage" id="cvstage"><svg id="cvedges" style="position:absolute;overflow:visible"></svg></div></div>
-     <div class="cv-tools">
-       <div class="btn sm" onclick="cvZoom(1.2)">+</div><div class="btn sm" onclick="cvZoom(.83)">−</div>
-       <div class="btn sm" onclick="cvFit()">⛶ Fit</div></div>
+     <svg class="cv-mini" id="cvmini" viewBox="0 0 180 120" preserveAspectRatio="none" onclick="cvMiniClick(event)"></svg>
+     <div class="cv-tools"><div class="btn sm" onclick="cvZoom(1.2)">+</div><div class="btn sm" onclick="cvZoom(.83)">−</div><div class="btn sm" onclick="cvFit()">⛶ Fit</div></div>
      <div class="cv-panel" id="cvpanel"></div>
    </div>`;
 }
