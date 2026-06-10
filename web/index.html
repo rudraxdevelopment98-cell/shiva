@@ -4,159 +4,171 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>SHIVA — MCP Security · Mission Control</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#060a18; --bg2:#0a1024;
-    --cyan:#22d3ee; --indigo:#6366f1; --amber:#fbbf24;
-    --green:#34d399; --red:#f87171; --violet:#a78bfa; --pink:#f472b6;
-    --ink:#e6ecff; --muted:#8a96c0; --line:rgba(120,140,220,.18);
-    --panel:rgba(12,18,40,.82);
+    --bg:#05081590; --cyan:#22d3ee; --indigo:#6366f1; --amber:#fbbf24;
+    --green:#34d399; --red:#fb7185; --violet:#a78bfa; --pink:#f472b6; --slate:#64748b;
+    --ink:#eaf0ff; --muted:#8a96c0; --line:rgba(120,140,220,.16);
+    --panel:rgba(11,16,38,.72); --glass:rgba(255,255,255,.06);
+    --font:"Inter",system-ui,sans-serif; --head:"Space Grotesk",var(--font);
   }
   *{box-sizing:border-box}
-  html,body{margin:0;height:100%;overflow:hidden;background:var(--bg);
-    font-family:"Segoe UI",system-ui,-apple-system,sans-serif;color:var(--ink)}
+  html,body{margin:0;height:100%;overflow:hidden;background:#04060f;color:var(--ink);font-family:var(--font)}
+  ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-thumb{background:rgba(120,140,220,.3);border-radius:9px}
 
-  /* ---------- cinematic background ---------- */
-  #space{position:fixed;inset:0;z-index:0;
-    background:
-      radial-gradient(1200px 700px at 80% -10%, rgba(99,102,241,.18), transparent 60%),
-      radial-gradient(1000px 600px at 10% 110%, rgba(34,211,238,.14), transparent 60%),
-      radial-gradient(900px 900px at 50% 50%, rgba(167,139,250,.06), transparent 70%),
-      linear-gradient(180deg,var(--bg),var(--bg2));
-  }
-  #stars,#stars2{position:fixed;inset:-50% 0;z-index:0;pointer-events:none;opacity:.6}
-  #stars{background-image:
-    radial-gradient(1.4px 1.4px at 20% 30%, #fff, transparent),
-    radial-gradient(1.2px 1.2px at 70% 60%, #cfe, transparent),
-    radial-gradient(1px 1px at 40% 80%, #bcd, transparent),
-    radial-gradient(1.6px 1.6px at 90% 20%, #fff, transparent),
-    radial-gradient(1px 1px at 55% 15%, #aef, transparent);
-    background-size:600px 600px;animation:drift 90s linear infinite}
-  #stars2{background-image:
-    radial-gradient(1px 1px at 30% 50%, #fff, transparent),
-    radial-gradient(1px 1px at 80% 35%, #9cf, transparent),
-    radial-gradient(1.3px 1.3px at 15% 70%, #fff, transparent);
-    background-size:400px 400px;opacity:.4;animation:drift 140s linear infinite reverse}
-  @keyframes drift{from{transform:translateY(0)}to{transform:translateY(-600px)}}
-  #grid{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.25;
-    background-image:linear-gradient(var(--line) 1px,transparent 1px),
-      linear-gradient(90deg,var(--line) 1px,transparent 1px);
-    background-size:46px 46px;
-    mask-image:radial-gradient(circle at 50% 45%,#000 30%,transparent 80%)}
+  /* ---------- background layers ---------- */
+  #space{position:fixed;inset:0;z-index:0;background:
+    radial-gradient(1300px 760px at 82% -12%, rgba(99,102,241,.20), transparent 60%),
+    radial-gradient(1100px 680px at 8% 112%, rgba(34,211,238,.16), transparent 60%),
+    radial-gradient(1000px 1000px at 50% 45%, rgba(167,139,250,.07), transparent 70%),
+    linear-gradient(180deg,#05081a,#070b1f 60%,#04060f)}
+  #constellation{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.7}
+  #grid{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.22;
+    background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+    background-size:48px 48px;mask-image:radial-gradient(circle at 50% 46%,#000 28%,transparent 78%)}
+  #vignette{position:fixed;inset:0;z-index:2;pointer-events:none;
+    box-shadow:inset 0 0 240px 60px rgba(2,4,12,.9);
+    background:repeating-linear-gradient(0deg,rgba(0,0,0,0) 0,rgba(0,0,0,0) 2px,rgba(0,0,0,.06) 3px)}
 
-  /* ---------- top bar ---------- */
-  header{position:fixed;top:0;left:0;right:0;z-index:30;
-    display:flex;align-items:center;gap:18px;padding:14px 22px;
-    background:linear-gradient(180deg,rgba(6,10,24,.92),rgba(6,10,24,0));}
-  .brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.5px}
-  .logo{width:34px;height:34px;border-radius:9px;position:relative;
-    background:conic-gradient(from 0deg,var(--cyan),var(--indigo),var(--violet),var(--cyan));
-    box-shadow:0 0 22px rgba(99,102,241,.6);animation:spin 8s linear infinite}
-  .logo::after{content:"☩";position:absolute;inset:0;display:grid;place-items:center;
-    font-size:18px;color:#fff;text-shadow:0 0 8px #000}
+  /* ---------- header ---------- */
+  header{position:fixed;top:0;left:0;right:0;z-index:30;display:flex;align-items:center;gap:16px;
+    padding:14px 22px;background:linear-gradient(180deg,rgba(5,8,22,.94),rgba(5,8,22,0))}
+  .brand{display:flex;align-items:center;gap:12px;font-family:var(--head);font-weight:700;letter-spacing:.4px;font-size:15px}
+  .logo{width:36px;height:36px;border-radius:10px;position:relative;display:grid;place-items:center;
+    background:conic-gradient(from 0deg,var(--cyan),var(--indigo),var(--violet),var(--pink),var(--cyan));
+    box-shadow:0 0 24px rgba(99,102,241,.65);animation:spin 9s linear infinite}
+  .logo b{position:absolute;inset:3px;border-radius:7px;background:#070b1f;display:grid;place-items:center;font-size:17px}
   @keyframes spin{to{transform:rotate(360deg)}}
-  .brand small{display:block;font-weight:500;color:var(--muted);font-size:11px;letter-spacing:2px}
+  .brand small{display:block;font-weight:500;color:var(--muted);font-size:10px;letter-spacing:3px;font-family:var(--font)}
   nav{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap}
-  .tab{padding:9px 16px;border-radius:999px;cursor:pointer;font-size:13px;font-weight:600;
-    color:var(--muted);border:1px solid transparent;transition:.25s;user-select:none}
-  .tab:hover{color:var(--ink);background:rgba(255,255,255,.04)}
+  .tab{padding:9px 15px;border-radius:999px;cursor:pointer;font-size:12.5px;font-weight:600;color:var(--muted);
+    border:1px solid transparent;transition:.25s;user-select:none;font-family:var(--head);display:flex;gap:7px;align-items:center}
+  .tab .k{font-size:10px;opacity:.6;border:1px solid currentColor;border-radius:5px;padding:0 4px}
+  .tab:hover{color:var(--ink);background:var(--glass)}
   .tab.active{color:#fff;border-color:rgba(99,102,241,.6);
-    background:linear-gradient(180deg,rgba(99,102,241,.25),rgba(34,211,238,.12));
-    box-shadow:0 0 18px rgba(99,102,241,.35)}
+    background:linear-gradient(180deg,rgba(99,102,241,.28),rgba(34,211,238,.12));box-shadow:0 0 20px rgba(99,102,241,.4)}
 
-  /* ---------- canvas / stage ---------- */
+  /* ---------- stage ---------- */
   #viewport{position:fixed;inset:0;z-index:10;cursor:grab;overflow:hidden}
   #viewport.grabbing{cursor:grabbing}
-  #stage{position:absolute;left:0;top:0;width:3600px;height:2200px;
-    transform-origin:0 0;transition:transform .12s ease-out}
-  #edges{position:absolute;left:0;top:0;width:3600px;height:2200px;pointer-events:none;overflow:visible}
+  #stage{position:absolute;left:0;top:0;width:4200px;height:2600px;transform-origin:0 0;will-change:transform}
+  #edges{position:absolute;left:0;top:0;width:4200px;height:2600px;pointer-events:none;overflow:visible}
 
-  .node{position:absolute;transform:translate(-50%,-50%) scale(.6);opacity:0;
-    min-width:150px;max-width:230px;padding:14px 16px;border-radius:16px;cursor:pointer;
-    background:var(--panel);backdrop-filter:blur(6px);
-    border:1px solid rgba(255,255,255,.10);
-    box-shadow:0 10px 40px rgba(0,0,0,.45);
-    transition:transform .4s cubic-bezier(.2,.9,.2,1.2),opacity .4s,box-shadow .25s,border-color .25s}
+  .node{position:absolute;transform:translate(-50%,-50%) scale(.4);opacity:0;min-width:158px;max-width:236px;
+    padding:14px 16px;border-radius:18px;cursor:pointer;background:var(--panel);backdrop-filter:blur(9px);
+    border:1px solid rgba(255,255,255,.10);box-shadow:0 14px 44px rgba(0,0,0,.5);
+    transition:transform .5s cubic-bezier(.2,.9,.2,1.3),opacity .5s,box-shadow .3s,border-color .3s,filter .3s}
   .node.in{opacity:1;transform:translate(-50%,-50%) scale(1)}
-  .node:hover{transform:translate(-50%,-50%) scale(1.06);border-color:var(--clr,#fff);
-    box-shadow:0 0 0 1px var(--clr), 0 0 34px var(--glow,rgba(99,102,241,.5))}
-  .node .ttl{font-weight:700;font-size:14px;display:flex;align-items:center;gap:8px}
-  .node .ico{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;
-    font-size:15px;background:var(--clr,#444);color:#06101f;flex:none;
-    box-shadow:0 0 16px var(--glow,rgba(99,102,241,.5))}
-  .node .sub{font-size:11px;color:var(--muted);margin-top:6px;line-height:1.45}
-  .node .pill{display:inline-block;margin-top:8px;font-size:10px;font-weight:700;letter-spacing:.5px;
-    padding:3px 9px;border-radius:999px;border:1px solid var(--clr);color:var(--clr)}
-  .node.big{min-width:200px}
-  .node.lg .ttl{font-size:16px}
+  .node:hover{transform:translate(-50%,-50%) scale(1.07)!important;border-color:var(--clr);
+    box-shadow:0 0 0 1px var(--clr),0 0 40px var(--glow)}
+  .node.sel{border-color:var(--clr);box-shadow:0 0 0 2px var(--clr),0 0 48px var(--glow)}
+  .node.dim{opacity:.22;filter:saturate(.4)}
+  .node .top{display:flex;align-items:center;gap:10px}
+  .node .ico{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font-size:16px;flex:none;
+    background:linear-gradient(150deg,var(--clr),color-mix(in srgb,var(--clr) 55%,#000));color:#04060f;
+    box-shadow:0 0 18px var(--glow)}
+  .node .ttl{font-family:var(--head);font-weight:700;font-size:14.5px;line-height:1.1}
+  .node .sub{font-size:11px;color:var(--muted);margin-top:8px;line-height:1.5}
+  .node .pill{display:inline-block;margin-top:9px;font-size:9.5px;font-weight:700;letter-spacing:.6px;
+    padding:3px 9px;border-radius:999px;border:1px solid var(--clr);color:var(--clr);font-family:var(--head)}
+  .node.lg{min-width:188px}.node.lg .ttl{font-size:16px}
+  .node .glowdot{position:absolute;top:11px;right:12px;width:8px;height:8px;border-radius:50%;
+    background:var(--clr);box-shadow:0 0 10px var(--clr);animation:blink 2.2s ease-in-out infinite}
+  @keyframes blink{50%{opacity:.35}}
+  .node.here::before{content:"";position:absolute;inset:-8px;border-radius:22px;border:2px solid var(--cyan);
+    animation:ring 1.9s ease-out infinite}
+  .node.here::after{content:"◉ YOU ARE HERE";position:absolute;top:-32px;left:50%;transform:translateX(-50%);
+    font-family:var(--head);font-size:10px;font-weight:700;letter-spacing:1.4px;color:var(--cyan);
+    text-shadow:0 0 12px var(--cyan);white-space:nowrap}
+  @keyframes ring{0%{transform:scale(1);opacity:.9}100%{transform:scale(1.4);opacity:0}}
 
-  .node.here::before{content:"";position:absolute;inset:-7px;border-radius:20px;
-    border:2px solid var(--cyan);opacity:.9;animation:pulse 1.8s ease-out infinite}
-  .node.here::after{content:"◉ YOU ARE HERE";position:absolute;top:-30px;left:50%;
-    transform:translateX(-50%);font-size:10px;font-weight:800;letter-spacing:1px;color:var(--cyan);
-    text-shadow:0 0 10px var(--cyan);white-space:nowrap}
-  @keyframes pulse{0%{transform:scale(1);opacity:.9}100%{transform:scale(1.35);opacity:0}}
-
-  .edge{fill:none;stroke-width:2.4;stroke-linecap:round;
-    filter:drop-shadow(0 0 6px var(--ec,rgba(99,102,241,.55)));
-    stroke-dasharray:10 14;animation:flow 1.4s linear infinite;opacity:0;transition:opacity .6s}
-  .edge.in{opacity:.85}
-  .edge.faint{stroke-dasharray:3 9;opacity:.4;animation:flow 3s linear infinite}
-  @keyframes flow{to{stroke-dashoffset:-48}}
-  .elabel{fill:var(--muted);font-size:12px;font-weight:600;opacity:0;transition:opacity .6s}
-  .elabel.in{opacity:.85}
+  .edge{fill:none;stroke-width:2.4;stroke-linecap:round;stroke-dasharray:9 13;
+    animation:flow 1.5s linear infinite;opacity:0;transition:opacity .6s,stroke-width .25s}
+  .edge.in{opacity:.75}.edge.hot{opacity:1;stroke-width:3.6}
+  .edge.dim{opacity:.12}
+  @keyframes flow{to{stroke-dashoffset:-44}}
+  .epart{r:3.5;opacity:0;transition:opacity .5s}.epart.in{opacity:.95}
+  .elabel{font-family:var(--head);font-size:12px;font-weight:600;fill:var(--muted);opacity:0;transition:opacity .6s}
+  .elabel.in{opacity:.9}.elabel.dim{opacity:.15}
 
   /* ---------- detail panel ---------- */
-  #panel{position:fixed;top:74px;right:18px;width:340px;max-height:calc(100vh - 150px);z-index:40;
-    background:var(--panel);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.12);
-    border-radius:18px;padding:20px;overflow:auto;transform:translateX(120%);transition:.4s cubic-bezier(.2,.8,.2,1);
-    box-shadow:0 20px 60px rgba(0,0,0,.5)}
+  #panel{position:fixed;top:76px;right:18px;width:344px;max-height:calc(100vh - 160px);z-index:40;
+    background:var(--panel);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.13);border-radius:20px;
+    padding:22px;overflow:auto;transform:translateX(130%);transition:.5s cubic-bezier(.18,.9,.2,1);
+    box-shadow:0 24px 70px rgba(0,0,0,.55)}
   #panel.open{transform:translateX(0)}
-  #panel h2{margin:0 0 4px;font-size:19px;display:flex;align-items:center;gap:10px}
-  #panel .tag{font-size:11px;font-weight:700;letter-spacing:.5px;color:var(--clr,#9cf);
-    border:1px solid var(--clr,#9cf);padding:3px 9px;border-radius:999px;display:inline-block;margin-bottom:12px}
-  #panel ul{margin:10px 0;padding-left:18px}
-  #panel li{margin:7px 0;font-size:13px;color:#cdd6f5;line-height:1.5}
-  #panel a.doc{display:inline-flex;gap:6px;align-items:center;margin-top:8px;font-size:13px;
-    color:var(--cyan);text-decoration:none;font-weight:600}
+  #panel .tag{font-family:var(--head);font-size:10.5px;font-weight:700;letter-spacing:.7px;color:var(--clr);
+    border:1px solid var(--clr);padding:4px 10px;border-radius:999px;display:inline-block;margin-bottom:14px}
+  #panel h2{font-family:var(--head);margin:0 0 12px;font-size:20px;display:flex;align-items:center;gap:11px}
+  #panel ul{margin:8px 0;padding-left:18px}
+  #panel li{margin:9px 0;font-size:13px;color:#d2dbf7;line-height:1.55}
+  #panel a.doc{display:inline-flex;gap:6px;align-items:center;margin-top:10px;font-size:13px;color:var(--cyan);
+    text-decoration:none;font-weight:600;font-family:var(--head)}
   #panel a.doc:hover{text-decoration:underline}
-  #panel .x{position:absolute;top:14px;right:16px;cursor:pointer;color:var(--muted);font-size:20px}
+  #panel .x{position:absolute;top:16px;right:18px;cursor:pointer;color:var(--muted);font-size:18px}
   #panel .x:hover{color:#fff}
+  #panel .nav2{display:flex;gap:8px;margin-top:16px}
+  #panel .nav2 b{flex:1;text-align:center;font-size:11px;padding:8px;border-radius:10px;cursor:pointer;
+    background:var(--glass);color:var(--muted);font-weight:600;transition:.2s}
+  #panel .nav2 b:hover{color:#fff;background:rgba(99,102,241,.25)}
 
-  /* ---------- HUD / controls ---------- */
-  #hud{position:fixed;left:18px;bottom:18px;z-index:30;display:flex;flex-direction:column;gap:10px;
-    background:var(--panel);border:1px solid rgba(255,255,255,.10);border-radius:14px;padding:14px 16px;width:230px}
-  #hud .lbl{font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
-  .bar{height:8px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:6px}
-  .bar > i{display:block;height:100%;border-radius:99px;
-    background:linear-gradient(90deg,var(--cyan),var(--indigo));box-shadow:0 0 12px var(--cyan);
-    width:0;transition:width 1.4s ease}
-  #hud .stat{display:flex;justify-content:space-between;font-size:12px;margin-top:4px}
-  #hud .stat b{color:#fff}
+  /* ---------- HUD / minimap / controls ---------- */
+  .glasscard{background:var(--panel);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.10);border-radius:16px}
+  #hud{position:fixed;left:18px;bottom:18px;z-index:30;padding:15px 17px;width:236px}
+  #hud .lbl{font-family:var(--head);font-size:10.5px;color:var(--muted);letter-spacing:1.2px;text-transform:uppercase}
+  .bar{height:9px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:7px;position:relative}
+  .bar>i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--cyan),var(--indigo),var(--violet));
+    box-shadow:0 0 14px var(--cyan);width:0;transition:width 1.6s cubic-bezier(.2,.8,.2,1)}
+  #hud .stat{display:flex;justify-content:space-between;font-size:12px;margin-top:7px;color:var(--muted)}
+  #hud .stat b{color:#fff;font-family:var(--head)}
+
+  #minimap{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:30;width:208px;height:118px;padding:8px}
+  #minimap svg{width:100%;height:100%;display:block;cursor:pointer}
+  #minimap .mtitle{position:absolute;top:-20px;left:0;font-size:10px;letter-spacing:1.5px;color:var(--muted);font-family:var(--head)}
 
   #ctrls{position:fixed;right:18px;bottom:18px;z-index:30;display:flex;gap:8px}
-  .btn{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;cursor:pointer;
-    background:var(--panel);border:1px solid rgba(255,255,255,.12);color:var(--ink);font-size:18px;
-    transition:.2s;user-select:none}
-  .btn:hover{border-color:var(--cyan);color:var(--cyan);box-shadow:0 0 16px rgba(34,211,238,.4)}
+  .btn{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;cursor:pointer;
+    background:var(--panel);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.12);color:var(--ink);
+    font-size:18px;transition:.2s;user-select:none}
+  .btn:hover{border-color:var(--cyan);color:var(--cyan);box-shadow:0 0 18px rgba(34,211,238,.4)}
+  .btn.on{border-color:var(--amber);color:var(--amber);box-shadow:0 0 18px rgba(251,191,36,.4)}
 
-  #scenecap{position:fixed;left:50%;top:70px;transform:translateX(-50%);z-index:25;text-align:center;
-    pointer-events:none;opacity:0;transition:opacity .5s}
+  #scenecap{position:fixed;left:50%;top:74px;transform:translateX(-50%);z-index:25;text-align:center;pointer-events:none;
+    opacity:0;transition:opacity .5s}
   #scenecap.show{opacity:1}
-  #scenecap h1{margin:0;font-size:26px;font-weight:800;letter-spacing:1px;
+  #scenecap h1{font-family:var(--head);margin:0;font-size:27px;font-weight:700;letter-spacing:1.5px;
     background:linear-gradient(90deg,#fff,var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
-  #scenecap p{margin:4px 0 0;color:var(--muted);font-size:13px}
+  #scenecap p{margin:5px 0 0;color:var(--muted);font-size:13px}
 
-  .hint{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:20;color:var(--muted);
-    font-size:12px;opacity:.7;pointer-events:none}
-  @media(max-width:680px){#panel{width:calc(100vw - 36px)}#hud{display:none}.brand small{display:none}}
+  /* ---------- intro ---------- */
+  #intro{position:fixed;inset:0;z-index:90;display:grid;place-items:center;background:#04060f;
+    transition:opacity 1s,visibility 1s}
+  #intro.gone{opacity:0;visibility:hidden}
+  #intro .wrap{text-align:center;animation:rise 1.2s cubic-bezier(.2,.8,.2,1)}
+  #intro .big{width:88px;height:88px;border-radius:22px;margin:0 auto 22px;position:relative;
+    background:conic-gradient(from 0deg,var(--cyan),var(--indigo),var(--violet),var(--pink),var(--cyan));
+    box-shadow:0 0 60px rgba(99,102,241,.7);animation:spin 6s linear infinite}
+  #intro .big b{position:absolute;inset:5px;border-radius:17px;background:#04060f;display:grid;place-items:center;font-size:40px}
+  #intro h1{font-family:var(--head);font-size:40px;letter-spacing:5px;margin:0;
+    background:linear-gradient(90deg,#fff,var(--cyan),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+  #intro p{color:var(--muted);letter-spacing:3px;margin:10px 0 26px;font-size:13px;font-family:var(--head)}
+  #intro .go{display:inline-block;padding:12px 28px;border-radius:999px;cursor:pointer;font-family:var(--head);font-weight:600;
+    border:1px solid var(--cyan);color:var(--cyan);transition:.25s;letter-spacing:1px}
+  #intro .go:hover{background:var(--cyan);color:#04060f;box-shadow:0 0 30px var(--cyan)}
+  @keyframes rise{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+  @media(max-width:680px){#panel{width:calc(100vw - 36px)}#hud,#minimap{display:none}.brand small,.tab .k{display:none}}
 </style>
 </head>
 <body>
-  <div id="space"></div><div id="grid"></div><div id="stars"></div><div id="stars2"></div>
+  <div id="space"></div>
+  <canvas id="constellation"></canvas>
+  <div id="grid"></div><div id="vignette"></div>
 
   <header>
-    <div class="brand"><div class="logo"></div>
+    <div class="brand"><div class="logo"><b>☩</b></div>
       <div>SHIVA · MCP SECURITY<small>MISSION CONTROL</small></div>
     </div>
     <nav id="nav"></nav>
@@ -164,223 +176,297 @@
 
   <div id="scenecap"><h1></h1><p></p></div>
 
-  <div id="viewport">
-    <div id="stage">
-      <svg id="edges"></svg>
-    </div>
-  </div>
+  <div id="viewport"><div id="stage"><svg id="edges"></svg></div></div>
 
   <aside id="panel">
     <div class="x" onclick="closePanel()">✕</div>
-    <span class="tag"></span>
-    <h2></h2>
-    <div class="body"></div>
+    <span class="tag"></span><h2></h2><div class="body"></div>
+    <div class="nav2"><b onclick="stepNode(-1)">‹ prev</b><b onclick="stepNode(1)">next ›</b></div>
   </aside>
 
-  <div id="hud">
+  <div id="hud" class="glasscard">
     <div class="lbl">Overall progress</div>
     <div class="bar"><i id="ovbar"></i></div>
-    <div class="stat"><span>Current phase</span><b style="color:var(--amber)">Phase 0</b></div>
+    <div class="stat"><span>Phase</span><b style="color:var(--amber)">0 · Learn+Break</b></div>
     <div class="stat"><span>Day</span><b>0 / 540</b></div>
     <div class="stat"><span>Attacks reproduced</span><b>0 / 3</b></div>
   </div>
 
+  <div id="minimap" class="glasscard"><div class="mtitle">MAP</div><svg id="mm" viewBox="0 0 200 110"></svg></div>
+
   <div id="ctrls">
-    <div class="btn" onclick="zoomBy(1.2)">+</div>
-    <div class="btn" onclick="zoomBy(.83)">−</div>
-    <div class="btn" title="Fit" onclick="fitScene()">⛶</div>
+    <div class="btn" id="tourbtn" title="Auto-tour (space)" onclick="toggleTour()">▶</div>
+    <div class="btn" title="Zoom in" onclick="zoomBy(1.2)">+</div>
+    <div class="btn" title="Zoom out" onclick="zoomBy(.82)">−</div>
+    <div class="btn" title="Fit (F)" onclick="fitScene()">⛶</div>
   </div>
 
-  <div class="hint">drag to pan · scroll to zoom · click a node for details</div>
+  <div id="intro">
+    <div class="wrap">
+      <div class="big"><b>☩</b></div>
+      <h1>SHIVA</h1>
+      <p>MCP SECURITY · MISSION CONTROL</p>
+      <div class="go" onclick="enter()">ENTER ▸</div>
+    </div>
+  </div>
 
 <script>
-/* ============== DATA: scenes of nodes + edges ============== */
 const DOC="https://github.com/rudraxdevelopment98-cell/shiva/blob/claude/dazzling-galileo-j9yt04/docs/";
-const C={cyan:"#22d3ee",indigo:"#6366f1",amber:"#fbbf24",green:"#34d399",red:"#f87171",violet:"#a78bfa",pink:"#f472b6"};
+const C={cyan:"#22d3ee",indigo:"#6366f1",amber:"#fbbf24",green:"#34d399",red:"#fb7185",violet:"#a78bfa",pink:"#f472b6",slate:"#7c89b0"};
 
 const SCENES={
-  journey:{title:"THE JOURNEY",sub:"18 months · 4 phases · decision gates between each",
-    nodes:[
-      {id:"p0",x:560,y:1100,clr:C.amber,ico:"🧪",ttl:"Phase 0",sub:"Learn + Break · Weeks 0-6",pill:"NOW",cls:"here lg",
-        det:["Stand up MCP locally; build your own servers + client.","Reproduce tool poisoning, drift/rug-pull, cross-tool escalation.","Publish a write-up per attack = learning + credibility."],doc:"roadmap/"},
-      {id:"g0",x:1080,y:1100,clr:C.cyan,ico:"◆",ttl:"Gate 0",sub:"Interesting enough for 18 months?",cls:"",
-        det:["Honest self-check at the end of Phase 0.","No → you're already a rare MCP-security expert."],doc:"progress/"},
-      {id:"p1",x:1600,y:1100,clr:C.indigo,ico:"🔍",ttl:"Phase 1",sub:"OSS Scanner · Months 1-4",cls:"lg",
-        det:["Static analysis of MCP manifests → risk report.","Ship smallest useful tool: CLI + CI check.","Done when a stranger finds it useful."],doc:"roadmap/"},
-      {id:"g1",x:2120,y:1100,clr:C.cyan,ico:"◆",ttl:"Gate 1",sub:"Did anyone outside me adopt it?",cls:"",
-        det:["No traction → reassess the wedge before 6 more months."],doc:"progress/"},
-      {id:"p2",x:2640,y:1100,clr:C.violet,ico:"🚦",ttl:"Phase 2",sub:"Runtime Gateway · Months 4-10",cls:"lg",
-        det:["Proxy between agent and servers.","Log every call, allowlist, block drift in real time.","This is the SOC pipeline — your edge."],doc:"architecture/"},
-      {id:"p3",x:3160,y:1100,clr:C.green,ico:"🏛️",ttl:"Phase 3",sub:"Hosted Layer · Months 10-18",cls:"lg",
-        det:["Registry + reputation, central policy, compliance.","The part enterprises pay for.","Done when you have a design partner."],doc:"roadmap/"},
-    ],
-    edges:[["p0","g0",""],["g0","p1","continue"],["p1","g1",""],["g1","p2","continue"],["p2","p3",""]]},
+ journey:{icon:"🧭",title:"THE JOURNEY",sub:"18 months · 4 phases · decision gates between each",
+  nodes:[
+   {id:"p0",x:680,y:1300,clr:C.amber,ico:"🧪",ttl:"Phase 0",sub:"Learn + Break · Weeks 0-6",pill:"● ACTIVE",cls:"here lg",
+    det:["Stand up MCP locally; build your own servers + client.","Reproduce tool poisoning, drift/rug-pull, cross-tool escalation.","Publish a write-up per attack = learning + credibility."],doc:"roadmap/"},
+   {id:"g0",x:1200,y:1300,clr:C.cyan,ico:"◆",ttl:"Gate 0",sub:"Interesting enough for 18 months?",cls:"",
+    det:["Honest self-check at the end of Phase 0.","No → you're already a rare MCP-security expert."],doc:"progress/"},
+   {id:"p1",x:1720,y:1300,clr:C.indigo,ico:"🔍",ttl:"Phase 1",sub:"OSS Scanner · Months 1-4",cls:"lg",
+    det:["Static analysis of MCP manifests → risk report.","Ship the smallest useful tool: CLI + CI check.","Done when a stranger finds it useful."],doc:"roadmap/"},
+   {id:"g1",x:2240,y:1300,clr:C.cyan,ico:"◆",ttl:"Gate 1",sub:"Did anyone outside me adopt it?",cls:"",
+    det:["No traction → reassess the wedge before 6 more months."],doc:"progress/"},
+   {id:"p2",x:2760,y:1300,clr:C.violet,ico:"🚦",ttl:"Phase 2",sub:"Runtime Gateway · Months 4-10",cls:"lg",
+    det:["Proxy between agent and servers.","Log every call, allowlist, block drift in real time.","This is the SOC pipeline — your edge."],doc:"architecture/"},
+   {id:"p3",x:3280,y:1300,clr:C.green,ico:"🏛️",ttl:"Phase 3",sub:"Hosted Layer · Months 10-18",cls:"lg",
+    det:["Registry + reputation, central policy, compliance.","The part enterprises pay for.","Done when you have a design partner."],doc:"roadmap/"}],
+  edges:[["p0","g0",""],["g0","p1","continue"],["p1","g1",""],["g1","p2","continue"],["p2","p3",""]]},
 
-  build:{title:"WHAT WE BUILD",sub:"Open-source funnel feeds the paid hosted layer",
-    nodes:[
-      {id:"agent",x:430,y:1100,clr:C.cyan,ico:"🤖",ttl:"Agent / Client",sub:"the thing using tools",cls:"",
-        det:["Every MCP tool call flows through here."],doc:"architecture/"},
-      {id:"gw",x:1080,y:1100,clr:C.violet,ico:"🚦",ttl:"Gateway",sub:"runtime proxy · OSS",cls:"lg big",
-        det:["Logs every call as structured events.","Allowlist + block; detect drift at runtime.","Human-in-the-loop for high-risk actions."],doc:"architecture/"},
-      {id:"srv",x:1730,y:1100,clr:C.cyan,ico:"🔌",ttl:"MCP Servers",sub:"tools, APIs, files, secrets",cls:"",
-        det:["The untrusted supply chain we defend."],doc:"threat-model/"},
-      {id:"scan",x:1080,y:560,clr:C.indigo,ico:"🔍",ttl:"Scanner",sub:"static analysis · OSS",cls:"big",
-        det:["Catches poisoning before trust.","Hidden instructions, over-broad perms, drift hashing.","CLI + CI check."],doc:"architecture/"},
-      {id:"range",x:430,y:560,clr:C.amber,ico:"🎯",ttl:"Attack Range",sub:"malicious-server benchmark",cls:"big",
-        det:["Library of poisoned / drift / escalation servers.","Your hero give-first asset + public leaderboard.","Tests both scanner and gateway."],doc:"improvements/"},
-      {id:"reg",x:2400,y:620,clr:C.green,ico:"📒",ttl:"Registry",sub:"reputation · HOSTED",cls:"",
-        det:["Server reputation scoring.","The paid layer."],doc:"architecture/"},
-      {id:"pol",x:2400,y:1100,clr:C.green,ico:"⚙️",ttl:"Central Policy",sub:"HOSTED",cls:"",
-        det:["Policy across many agents / teams."],doc:"architecture/"},
-      {id:"comp",x:2400,y:1580,clr:C.green,ico:"📑",ttl:"Compliance",sub:"NIST · EU AI Act · HOSTED",cls:"",
-        det:["Reporting mapped to regulation = forced buyers."],doc:"architecture/"},
-    ],
-    edges:[["agent","gw",""],["gw","srv",""],["range","scan","tests"],["range","gw","tests"],
-      ["scan","reg","reports"],["gw","pol","telemetry"],["reg","pol",""],["pol","comp",""]]},
+ build:{icon:"🏗️",title:"WHAT WE BUILD",sub:"open-source funnel feeds the paid hosted layer",
+  nodes:[
+   {id:"agent",x:560,y:1300,clr:C.cyan,ico:"🤖",ttl:"Agent / Client",sub:"the thing using tools",cls:"",det:["Every MCP tool call flows through here."],doc:"architecture/"},
+   {id:"gw",x:1240,y:1300,clr:C.violet,ico:"🚦",ttl:"Gateway",sub:"runtime proxy · OSS",cls:"lg",det:["Logs every call as structured events.","Allowlist + block; detect drift at runtime.","Human-in-the-loop for high-risk actions."],doc:"architecture/"},
+   {id:"srv",x:1920,y:1300,clr:C.cyan,ico:"🔌",ttl:"MCP Servers",sub:"tools, APIs, files, secrets",cls:"",det:["The untrusted supply chain we defend."],doc:"threat-model/"},
+   {id:"scan",x:1240,y:720,clr:C.indigo,ico:"🔍",ttl:"Scanner",sub:"static analysis · OSS",cls:"lg",det:["Catches poisoning before trust.","Hidden instructions, over-broad perms, drift hashing.","CLI + CI check."],doc:"architecture/"},
+   {id:"range",x:560,y:720,clr:C.amber,ico:"🎯",ttl:"Attack Range",sub:"malicious-server benchmark",cls:"lg",det:["Library of poisoned / drift / escalation servers.","Your hero give-first asset + public leaderboard.","Tests both scanner and gateway."],doc:"improvements/"},
+   {id:"reg",x:2680,y:780,clr:C.green,ico:"📒",ttl:"Registry",sub:"reputation · HOSTED",cls:"",det:["Server reputation scoring.","The paid layer."],doc:"architecture/"},
+   {id:"pol",x:2680,y:1300,clr:C.green,ico:"⚙️",ttl:"Central Policy",sub:"HOSTED",cls:"",det:["Policy across many agents / teams."],doc:"architecture/"},
+   {id:"comp",x:2680,y:1820,clr:C.green,ico:"📑",ttl:"Compliance",sub:"NIST · EU AI Act · HOSTED",cls:"",det:["Reporting mapped to regulation = forced buyers."],doc:"architecture/"}],
+  edges:[["agent","gw",""],["gw","srv",""],["range","scan","tests"],["range","gw","tests"],["scan","reg","reports"],["gw","pol","telemetry"],["reg","pol",""],["pol","comp",""]]},
 
-  threats:{title:"THE THREAT MAP",sub:"what we defend against — Phase 0 reproduces ①②③",
-    nodes:[
-      {id:"user",x:430,y:1100,clr:C.cyan,ico:"👤",ttl:"User",sub:"",cls:"",det:["Never sees the hidden instructions."],doc:"threat-model/"},
-      {id:"ag",x:1050,y:1100,clr:C.amber,ico:"🤖",ttl:"Agent / LLM",sub:"reads metadata as trusted",cls:"lg",
-        det:["The confused, over-trusting deputy."],doc:"threat-model/"},
-      {id:"sv",x:1750,y:1100,clr:C.red,ico:"🔌",ttl:"MCP Server",sub:"possibly malicious",cls:"lg",
-        det:["Presents tools + metadata the model obeys."],doc:"threat-model/"},
-      {id:"tl",x:2400,y:1100,clr:C.red,ico:"🛠️",ttl:"Tools / Secrets",sub:"files · APIs · tokens",cls:"",det:["The crown jewels."],doc:"threat-model/"},
-      {id:"a1",x:1380,y:560,clr:C.red,ico:"①",ttl:"Tool Poisoning",sub:"hidden instructions in metadata",cls:"big",
-        det:["Imperative text inside a tool description.","Invisible to the user; the model obeys it.","Phase 0 attack #1."],doc:"threat-model/"},
-      {id:"a2",x:1750,y:560,clr:C.red,ico:"②",ttl:"Drift / Rug-pull",sub:"description changes after trust",cls:"big",
-        det:["Benign at approval, malicious later.","Caught by baseline-hash at runtime."],doc:"threat-model/"},
-      {id:"a3",x:1900,y:1620,clr:C.red,ico:"③",ttl:"Cross-tool Escalation",sub:"one output steers next call",cls:"big",
-        det:["Indirect injection through the data plane."],doc:"threat-model/"},
-      {id:"a5",x:2400,y:1620,clr:C.pink,ico:"⑤",ttl:"Credential Theft",sub:"exfiltrate OAuth tokens",cls:"",
-        det:["Many servers hold tokens — a juicy target."],doc:"threat-model/"},
-    ],
-    edges:[["user","ag",""],["ag","sv",""],["sv","tl",""],
-      ["a1","ag","obey"],["a2","sv","swap"],["a3","ag","inject"],["a5","tl","steal"]]},
+ threats:{icon:"🛡️",title:"THE THREAT MAP",sub:"what we defend against — Phase 0 reproduces ①②③",
+  nodes:[
+   {id:"user",x:560,y:1300,clr:C.cyan,ico:"👤",ttl:"User",sub:"out of the loop",cls:"",det:["Never sees the hidden instructions."],doc:"threat-model/"},
+   {id:"ag",x:1180,y:1300,clr:C.amber,ico:"🤖",ttl:"Agent / LLM",sub:"reads metadata as trusted",cls:"lg",det:["The confused, over-trusting deputy."],doc:"threat-model/"},
+   {id:"sv",x:1900,y:1300,clr:C.red,ico:"🔌",ttl:"MCP Server",sub:"possibly malicious",cls:"lg",det:["Presents tools + metadata the model obeys."],doc:"threat-model/"},
+   {id:"tl",x:2560,y:1300,clr:C.red,ico:"🛠️",ttl:"Tools / Secrets",sub:"files · APIs · tokens",cls:"",det:["The crown jewels."],doc:"threat-model/"},
+   {id:"a1",x:1500,y:720,clr:C.red,ico:"①",ttl:"Tool Poisoning",sub:"hidden instructions in metadata",cls:"lg",det:["Imperative text inside a tool description.","Invisible to the user; the model obeys it.","Phase 0 attack #1."],doc:"threat-model/"},
+   {id:"a2",x:1980,y:720,clr:C.red,ico:"②",ttl:"Drift / Rug-pull",sub:"description changes after trust",cls:"lg",det:["Benign at approval, malicious later.","Caught by baseline-hash at runtime."],doc:"threat-model/"},
+   {id:"a3",x:2080,y:1880,clr:C.red,ico:"③",ttl:"Cross-tool Escalation",sub:"one output steers next call",cls:"lg",det:["Indirect injection through the data plane."],doc:"threat-model/"},
+   {id:"a5",x:2560,y:1880,clr:C.pink,ico:"⑤",ttl:"Credential Theft",sub:"exfiltrate OAuth tokens",cls:"",det:["Many servers hold tokens — a juicy target."],doc:"threat-model/"}],
+  edges:[["user","ag",""],["ag","sv",""],["sv","tl",""],["a1","ag","obey"],["a2","sv","swap"],["a3","ag","inject"],["a5","tl","steal"]]},
 
-  platform:{title:"THE PLATFORM",sub:"hosted command-center — accounts, admin, role-based access",
-    nodes:[
-      {id:"auth",x:560,y:1100,clr:C.cyan,ico:"🔐",ttl:"Auth",sub:"sign up / sign in",cls:"lg",
-        det:["Entry point. Supabase Auth (free tier)."],doc:"platform/"},
-      {id:"dash",x:1200,y:620,clr:C.indigo,ico:"📊",ttl:"Charts Hub",sub:"all visuals + live status",cls:"big",det:["This very dashboard, hosted."],doc:"platform/"},
-      {id:"usr",x:1200,y:1100,clr:C.violet,ico:"👤",ttl:"User Section",sub:"my tasks · learning · write-ups",cls:"big",det:["Personal view per collaborator."],doc:"platform/"},
-      {id:"adm",x:1200,y:1580,clr:C.amber,ico:"🛠️",ttl:"Admin Section",sub:"invite · roles · audit",cls:"big",det:["Manage people and what they can touch."],doc:"platform/"},
-      {id:"rbac",x:2000,y:1100,clr:C.green,ico:"🛡️",ttl:"Access Control",sub:"roles + per-section grants",cls:"lg big",
-        det:["Owner · Admin · Maintainer · Contributor · Viewer.","Per-resource grants: access only to what you're given.","Enforced via DB row-level security."],doc:"platform/"},
-      {id:"stage3",x:2680,y:1100,clr:C.muted,ico:"⏳",ttl:"Build when…",sub:"a real teammate joins",cls:"",
-        det:["Deferred so it doesn't steal Phase 0 time.","Stack: Next.js + Supabase + Vercel (all free tier)."],doc:"platform/"},
-    ],
-    edges:[["auth","dash",""],["auth","usr",""],["auth","adm",""],["dash","rbac","gated"],["usr","rbac","gated"],["adm","rbac","manages"],["rbac","stage3",""]]},
+ platform:{icon:"🖥️",title:"THE PLATFORM",sub:"hosted command-center — accounts, admin, role-based access",
+  nodes:[
+   {id:"auth",x:680,y:1300,clr:C.cyan,ico:"🔐",ttl:"Auth",sub:"sign up / sign in",cls:"lg",det:["Entry point. Supabase Auth (free tier)."],doc:"platform/"},
+   {id:"dash",x:1340,y:760,clr:C.indigo,ico:"📊",ttl:"Charts Hub",sub:"all visuals + live status",cls:"",det:["This very dashboard, hosted."],doc:"platform/"},
+   {id:"usr",x:1340,y:1300,clr:C.violet,ico:"👤",ttl:"User Section",sub:"my tasks · learning · write-ups",cls:"",det:["Personal view per collaborator."],doc:"platform/"},
+   {id:"adm",x:1340,y:1840,clr:C.amber,ico:"🛠️",ttl:"Admin Section",sub:"invite · roles · audit",cls:"",det:["Manage people and what they can touch."],doc:"platform/"},
+   {id:"rbac",x:2160,y:1300,clr:C.green,ico:"🛡️",ttl:"Access Control",sub:"roles + per-section grants",cls:"lg",det:["Owner · Admin · Maintainer · Contributor · Viewer.","Per-resource grants: access only to what you're given.","Enforced via DB row-level security."],doc:"platform/"},
+   {id:"stage3",x:2860,y:1300,clr:C.slate,ico:"⏳",ttl:"Build when…",sub:"a real teammate joins",cls:"",det:["Deferred so it doesn't steal Phase 0 time.","Stack: Next.js + Supabase + Vercel (all free tier)."],doc:"platform/"}],
+  edges:[["auth","dash",""],["auth","usr",""],["auth","adm",""],["dash","rbac","gated"],["usr","rbac","gated"],["adm","rbac","manages"],["rbac","stage3",""]]},
 
-  progress:{title:"WHERE WE ARE",sub:"live board — first 7 days of Phase 0",
-    nodes:[
-      {id:"d1",x:500,y:760,clr:C.amber,ico:"1",ttl:"Install MCP SDKs",sub:"Python + TypeScript",cls:"",det:["Day 1 · todo"],doc:"progress/"},
-      {id:"d2",x:900,y:980,clr:C.amber,ico:"2",ttl:"First MCP server",sub:"a trivial 'read file' tool",cls:"",det:["Day 2 · todo"],doc:"progress/"},
-      {id:"d3",x:1300,y:760,clr:C.red,ico:"3",ttl:"Poison a description",sub:"confirm the agent obeys",cls:"big",det:["Day 3 · todo · the key demo"],doc:"threat-model/"},
-      {id:"d4",x:1700,y:980,clr:C.cyan,ico:"4",ttl:"Publish attack #1",sub:"write-up + test server",cls:"",det:["Day 4 · todo"],doc:"learning/"},
-      {id:"d5",x:2100,y:760,clr:C.indigo,ico:"5",ttl:"Read the papers",sub:"Willison + threat-model",cls:"",det:["Day 5 · todo"],doc:"evidence/"},
-      {id:"d6",x:2500,y:980,clr:C.violet,ico:"6",ttl:"Sketch scanner",sub:"first 3 checks",cls:"",det:["Day 6 · todo"],doc:"architecture/"},
-      {id:"d7",x:2900,y:760,clr:C.green,ico:"7",ttl:"Decision gate 0",sub:"in for Phase 1?",cls:"big",det:["Day 7 · the first checkpoint"],doc:"roadmap/"},
-    ],
-    edges:[["d1","d2",""],["d2","d3",""],["d3","d4",""],["d4","d5",""],["d5","d6",""],["d6","d7",""]]},
+ progress:{icon:"📍",title:"WHERE WE ARE",sub:"live board — first 7 days of Phase 0 (click to toggle done)",
+  nodes:[
+   {id:"d1",x:640,y:900,clr:C.amber,ico:"1",ttl:"Install MCP SDKs",sub:"Python + TypeScript",cls:"",det:["Day 1 · to do"],doc:"progress/",task:true},
+   {id:"d2",x:1060,y:1140,clr:C.amber,ico:"2",ttl:"First MCP server",sub:"a trivial 'read file' tool",cls:"",det:["Day 2 · to do"],doc:"progress/",task:true},
+   {id:"d3",x:1480,y:900,clr:C.red,ico:"3",ttl:"Poison a description",sub:"confirm the agent obeys",cls:"lg",det:["Day 3 · the key demo"],doc:"threat-model/",task:true},
+   {id:"d4",x:1900,y:1140,clr:C.cyan,ico:"4",ttl:"Publish attack #1",sub:"write-up + test server",cls:"",det:["Day 4 · to do"],doc:"learning/",task:true},
+   {id:"d5",x:2320,y:900,clr:C.indigo,ico:"5",ttl:"Read the papers",sub:"Willison + threat-model",cls:"",det:["Day 5 · to do"],doc:"evidence/",task:true},
+   {id:"d6",x:2740,y:1140,clr:C.violet,ico:"6",ttl:"Sketch scanner",sub:"first 3 checks",cls:"",det:["Day 6 · to do"],doc:"architecture/",task:true},
+   {id:"d7",x:3160,y:900,clr:C.green,ico:"7",ttl:"Decision gate 0",sub:"in for Phase 1?",cls:"lg",det:["Day 7 · the first checkpoint"],doc:"roadmap/",task:true}],
+  edges:[["d1","d2",""],["d2","d3",""],["d3","d4",""],["d4","d5",""],["d5","d6",""],["d6","d7",""]]},
 };
 
-/* ============== render engine ============== */
-const stage=document.getElementById('stage'), svg=document.getElementById('edges'),
-      vp=document.getElementById('viewport'), nav=document.getElementById('nav');
-let cur="journey", tx=0,ty=0,scale=1, nodeMap={};
+/* ===== engine ===== */
+const stage=document.getElementById('stage'),svg=document.getElementById('edges'),vp=document.getElementById('viewport'),nav=document.getElementById('nav');
+const KEYS=Object.keys(SCENES);
+let cur="journey",nodeMap={},adj={},parts=[],selId=null,done={};
+let cam={x:0,y:0,z:1},camT=null; // camera + tween
 
-Object.entries(SCENES).forEach(([k,s],i)=>{
-  const t=document.createElement('div');t.className='tab'+(i===0?' active':'');
-  t.textContent=s.title.replace(/^THE /,'');t.onclick=()=>go(k,t);nav.appendChild(t);
-});
+/* tabs */
+KEYS.forEach((k,i)=>{const s=SCENES[k];const t=document.createElement('div');t.className='tab'+(i===0?' active':'');
+ t.innerHTML=`<span class="k">${i+1}</span>${s.icon} ${s.title.replace(/^THE /,'')}`;t.onclick=()=>go(k);t.dataset.k=k;nav.appendChild(t);});
 
-function clear(){[...stage.querySelectorAll('.node')].forEach(n=>n.remove());svg.innerHTML='';nodeMap={}}
+function clear(){[...stage.querySelectorAll('.node')].forEach(n=>n.remove());svg.innerHTML='';nodeMap={};adj={};parts=[];}
 
 function render(k){
-  clear();const s=SCENES[k];
-  // edges first (so they sit under nodes)
-  s.edges.forEach((e,i)=>{
-    const a=s.nodes.find(n=>n.id===e[0]),b=s.nodes.find(n=>n.id===e[1]);if(!a||!b)return;
-    const p=document.createElementNS('http://www.w3.org/2000/svg','path');
-    const mx=(a.x+b.x)/2,my=(a.y+b.y)/2, dx=(b.x-a.x), dy=(b.y-a.y);
-    const cx=mx-dy*0.12, cy=my+dx*0.12;
-    p.setAttribute('d',`M ${a.x} ${a.y} Q ${cx} ${cy} ${b.x} ${b.y}`);
-    p.setAttribute('class','edge'+(k==='threats'&&e[2]?'':''));
-    p.style.setProperty('--ec',(a.clr||C.indigo)+'aa');p.style.stroke=a.clr||C.indigo;
-    svg.appendChild(p);setTimeout(()=>p.classList.add('in'),250+i*70);
-    if(e[2]){const tl=document.createElementNS('http://www.w3.org/2000/svg','text');
-      tl.setAttribute('x',cx);tl.setAttribute('y',cy-6);tl.setAttribute('text-anchor','middle');
-      tl.setAttribute('class','elabel');tl.textContent=e[2];svg.appendChild(tl);
-      setTimeout(()=>tl.classList.add('in'),400+i*70);}
-  });
-  // nodes
-  s.nodes.forEach((n,i)=>{
-    const d=document.createElement('div');d.className='node '+(n.cls||'');
-    const clr=n.clr||C.indigo;d.style.setProperty('--clr',clr);d.style.setProperty('--glow',clr+'88');
-    d.style.left=n.x+'px';d.style.top=n.y+'px';
-    d.innerHTML=`<div class="ttl"><span class="ico">${n.ico}</span>${n.ttl}</div>
-      <div class="sub">${n.sub||''}</div>${n.pill?`<span class="pill">${n.pill}</span>`:''}`;
-    d.onclick=(ev)=>{ev.stopPropagation();openPanel(n);};
-    stage.appendChild(d);nodeMap[n.id]=d;
-    setTimeout(()=>d.classList.add('in'),150+i*90);
-  });
-  showCap(s);
+ clear();const s=SCENES[k];s.nodes.forEach(n=>adj[n.id]=new Set());
+ s.edges.forEach((e,i)=>{
+  const a=s.nodes.find(n=>n.id===e[0]),b=s.nodes.find(n=>n.id===e[1]);if(!a||!b)return;
+  adj[a.id].add(b.id);adj[b.id].add(a.id);
+  const mx=(a.x+b.x)/2,my=(a.y+b.y)/2,dx=b.x-a.x,dy=b.y-a.y;
+  const cx=mx-dy*0.13,cy=my+dx*0.13;
+  const p=document.createElementNS('http://www.w3.org/2000/svg','path');
+  p.setAttribute('d',`M ${a.x} ${a.y} Q ${cx} ${cy} ${b.x} ${b.y}`);p.setAttribute('class','edge');
+  p.style.stroke=a.clr;p.dataset.a=a.id;p.dataset.b=b.id;svg.appendChild(p);
+  setTimeout(()=>p.classList.add('in'),300+i*70);
+  // energy particle
+  const c=document.createElementNS('http://www.w3.org/2000/svg','circle');c.setAttribute('class','epart');
+  c.setAttribute('fill',a.clr);c.style.filter=`drop-shadow(0 0 6px ${a.clr})`;svg.appendChild(c);
+  setTimeout(()=>c.classList.add('in'),500+i*70);
+  parts.push({el:c,path:p,len:p.getTotalLength(),t:Math.random(),sp:0.0016+Math.random()*0.001,a:a.id,b:b.id});
+  if(e[2]){const tl=document.createElementNS('http://www.w3.org/2000/svg','text');
+   tl.setAttribute('x',cx);tl.setAttribute('y',cy-7);tl.setAttribute('text-anchor','middle');
+   tl.setAttribute('class','elabel');tl.textContent=e[2];tl.dataset.a=a.id;tl.dataset.b=b.id;svg.appendChild(tl);
+   setTimeout(()=>tl.classList.add('in'),450+i*70);}
+ });
+ s.nodes.forEach((n,i)=>{
+  const d=document.createElement('div');d.className='node '+(n.cls||'');
+  d.style.setProperty('--clr',n.clr);d.style.setProperty('--glow',n.clr+'88');
+  d.style.left=n.x+'px';d.style.top=n.y+'px';d.dataset.id=n.id;
+  const checked=n.task&&done[n.id];
+  d.innerHTML=`<div class="top"><span class="ico">${checked?'✓':n.ico}</span><span class="ttl">${n.ttl}</span></div>
+   <div class="sub">${n.sub||''}</div>${n.pill?`<span class="pill">${checked?'● DONE':n.pill}</span>`:''}
+   ${n.task?'<span class="glowdot"></span>':''}`;
+  if(checked){d.style.setProperty('--clr',C.green);d.style.setProperty('--glow',C.green+'88');}
+  d.onmouseenter=()=>focusEdges(n.id);d.onmouseleave=()=>{if(!selId)unfocus();else focusEdges(selId);};
+  d.onclick=(ev)=>{ev.stopPropagation();if(n.task)toggleTask(n);openPanel(n);flyTo(n);};
+  stage.appendChild(d);nodeMap[n.id]=d;setTimeout(()=>d.classList.add('in'),200+i*85);
+ });
+ showCap(s);buildMinimap(s);
 }
 
-function showCap(s){const c=document.getElementById('scenecap');
-  c.querySelector('h1').textContent=s.title;c.querySelector('p').textContent=s.sub;
-  c.classList.add('show');clearTimeout(showCap._t);showCap._t=setTimeout(()=>c.classList.remove('show'),2600);}
+function focusEdges(id){
+ svg.querySelectorAll('.edge,.elabel').forEach(el=>{
+  const on=el.dataset.a===id||el.dataset.b===id;
+  el.classList.toggle('hot',on&&el.classList.contains('edge'));el.classList.toggle('dim',!on);});
+ Object.entries(nodeMap).forEach(([nid,el])=>el.classList.toggle('dim',nid!==id&&!adj[id]?.has(nid)));
+}
+function unfocus(){svg.querySelectorAll('.edge,.elabel').forEach(el=>el.classList.remove('hot','dim'));
+ Object.values(nodeMap).forEach(el=>el.classList.remove('dim'));}
 
-function go(k,tab){if(k===cur)return;cur=k;closePanel();
-  [...nav.children].forEach(t=>t.classList.remove('active'));tab.classList.add('active');
-  stage.style.opacity=0;
-  setTimeout(()=>{render(k);fitScene();stage.style.opacity=1;},220);}
-stage.style.transition='transform .12s ease-out, opacity .25s';
+function showCap(s){const c=document.getElementById('scenecap');c.querySelector('h1').textContent=s.title;
+ c.querySelector('p').textContent=s.sub;c.classList.add('show');clearTimeout(showCap._t);
+ showCap._t=setTimeout(()=>c.classList.remove('show'),2800);}
 
-/* ---- detail panel ---- */
+function go(k){if(k===cur)return;cur=k;closePanel();stopTourIfManual();
+ [...nav.children].forEach(t=>t.classList.toggle('active',t.dataset.k===k));
+ stage.style.opacity=0;stage.style.transition='opacity .25s';
+ setTimeout(()=>{render(k);fitScene(true);stage.style.opacity=1;},230);}
+
+/* ---- panel ---- */
 const panel=document.getElementById('panel');
-function openPanel(n){panel.style.setProperty('--clr',n.clr||C.cyan);
-  panel.querySelector('.tag').textContent=n.sub||'';
-  panel.querySelector('.tag').style.color=n.clr;panel.querySelector('.tag').style.borderColor=n.clr;
-  panel.querySelector('h2').innerHTML=`<span class="ico" style="--clr:${n.clr};background:${n.clr};width:30px;height:30px;border-radius:9px;display:grid;place-items:center;color:#06101f;box-shadow:0 0 18px ${n.clr}88">${n.ico}</span>${n.ttl}`;
-  panel.querySelector('.body').innerHTML=`<ul>${(n.det||[]).map(x=>`<li>${x}</li>`).join('')}</ul>`+
-    (n.doc?`<a class="doc" href="${DOC}${n.doc}" target="_blank">Open full write-up ↗</a>`:'');
-  // glow connected node
-  Object.values(nodeMap).forEach(el=>el.style.filter='');
-  if(nodeMap[n.id])nodeMap[n.id].style.filter=`drop-shadow(0 0 20px ${n.clr})`;
-  panel.classList.add('open');}
-function closePanel(){panel.classList.remove('open');Object.values(nodeMap).forEach(el=>el.style.filter='');}
+function openPanel(n){selId=n.id;focusEdges(n.id);
+ Object.values(nodeMap).forEach(el=>el.classList.remove('sel'));nodeMap[n.id]?.classList.add('sel');
+ panel.style.setProperty('--clr',n.clr);
+ const tag=panel.querySelector('.tag');tag.textContent=n.sub||'';tag.style.color=n.clr;tag.style.borderColor=n.clr;
+ panel.querySelector('h2').innerHTML=`<span class="ico" style="--clr:${n.clr};--glow:${n.clr}88;width:32px;height:32px">${n.ico}</span>${n.ttl}`;
+ panel.querySelector('.body').innerHTML=`<ul>${(n.det||[]).map(x=>`<li>${x}</li>`).join('')}</ul>`+
+  (n.doc?`<a class="doc" href="${DOC}${n.doc}" target="_blank">Open full write-up ↗</a>`:'');
+ panel.classList.add('open');}
+function closePanel(){panel.classList.remove('open');selId=null;unfocus();
+ Object.values(nodeMap).forEach(el=>el.classList.remove('sel'));}
+function stepNode(dir){const ids=SCENES[cur].nodes.map(n=>n.id);let i=ids.indexOf(selId);
+ i=(i+dir+ids.length)%ids.length;const n=SCENES[cur].nodes[i];openPanel(n);flyTo(n);}
 
-/* ---- pan & zoom ---- */
-function apply(){stage.style.transform=`translate(${tx}px,${ty}px) scale(${scale})`;}
-function fitScene(){const s=SCENES[cur];let minx=1e9,miny=1e9,maxx=-1e9,maxy=-1e9;
-  s.nodes.forEach(n=>{minx=Math.min(minx,n.x);miny=Math.min(miny,n.y);maxx=Math.max(maxx,n.x);maxy=Math.max(maxy,n.y);});
-  const pad=200;minx-=pad;miny-=pad;maxx+=pad;maxy+=pad;
-  const w=maxx-minx,h=maxy-miny,W=vp.clientWidth,H=vp.clientHeight;
-  scale=Math.min(W/w,H/h,1.15);
-  tx=(W-w*scale)/2-minx*scale;ty=(H-h*scale)/2-miny*scale+20;apply();}
-function zoomBy(f){const W=vp.clientWidth/2,H=vp.clientHeight/2;
-  const nx=(W-tx)/scale,ny=(H-ty)/scale;scale=Math.max(.3,Math.min(2.2,scale*f));
-  tx=W-nx*scale;ty=H-ny*scale;apply();}
+function toggleTask(n){done[n.id]=!done[n.id];const el=nodeMap[n.id];
+ const c=done[n.id];el.querySelector('.ico').textContent=c?'✓':n.ico;
+ const pill=el.querySelector('.pill');if(pill)pill.textContent=c?'● DONE':n.pill;
+ el.style.setProperty('--clr',c?C.green:n.clr);el.style.setProperty('--glow',(c?C.green:n.clr)+'88');
+ updateHUD();}
+function updateHUD(){const d=Object.values(done).filter(Boolean).length;
+ document.querySelectorAll('#hud .stat b')[1].textContent=d+' / 540';
+ const a=[done.d3].filter(Boolean).length;}
 
-let drag=false,sx,sy,stx,sty;
-vp.addEventListener('mousedown',e=>{drag=true;vp.classList.add('grabbing');sx=e.clientX;sy=e.clientY;stx=tx;sty=ty;});
-window.addEventListener('mousemove',e=>{if(!drag)return;tx=stx+(e.clientX-sx);ty=sty+(e.clientY-sy);stage.style.transition='none';apply();});
-window.addEventListener('mouseup',()=>{drag=false;vp.classList.remove('grabbing');stage.style.transition='transform .12s ease-out, opacity .25s';});
+/* ---- camera ---- */
+function apply(){const W=vp.clientWidth,H=vp.clientHeight;
+ stage.style.transform=`translate(${W/2-cam.x*cam.z}px,${H/2-cam.y*cam.z}px) scale(${cam.z})`;}
+function flyTo(n){const off=panel.classList.contains('open')?175:0;
+ tween(n.x+off/Math.max(cam.z,.6),n.y,Math.min(Math.max(cam.z,1.0),1.25),700);}
+function fitScene(instant){const s=SCENES[cur];let a=1e9,b=1e9,c=-1e9,d=-1e9;
+ s.nodes.forEach(n=>{a=Math.min(a,n.x);b=Math.min(b,n.y);c=Math.max(c,n.x);d=Math.max(d,n.y);});
+ const pad=230;a-=pad;b-=pad;c+=pad;d+=pad;const w=c-a,h=d-b,W=vp.clientWidth,H=vp.clientHeight;
+ const z=Math.min(W/w,H/h,1.2);const tx=(a+c)/2,ty=(b+d)/2+10;
+ if(instant){cam={x:tx,y:ty,z};camT=null;apply();}else tween(tx,ty,z,650);}
+function zoomBy(f){tween(cam.x,cam.y,Math.max(.35,Math.min(2.2,cam.z*f)),260);}
+function tween(x,y,z,dur){camT={x0:cam.x,y0:cam.y,z0:cam.z,x1:x,y1:y,z1:z,t0:performance.now(),dur};}
+function ease(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;}
+
+/* drag / wheel / touch */
+let drag=false,sx,sy,c0;
+vp.addEventListener('mousedown',e=>{drag=true;vp.classList.add('grabbing');sx=e.clientX;sy=e.clientY;c0={...cam};camT=null;});
+window.addEventListener('mousemove',e=>{if(!drag)return;cam.x=c0.x-(e.clientX-sx)/cam.z;cam.y=c0.y-(e.clientY-sy)/cam.z;apply();});
+window.addEventListener('mouseup',()=>{drag=false;vp.classList.remove('grabbing');});
 vp.addEventListener('click',e=>{if(e.target===vp||e.target===stage||e.target===svg)closePanel();});
-vp.addEventListener('wheel',e=>{e.preventDefault();const r=vp.getBoundingClientRect();
-  const mx=e.clientX-r.left,my=e.clientY-r.top;const nx=(mx-tx)/scale,ny=(my-ty)/scale;
-  const f=e.deltaY<0?1.12:0.89;scale=Math.max(.3,Math.min(2.2,scale*f));
-  tx=mx-nx*scale;ty=my-ny*scale;stage.style.transition='none';apply();},{passive:false});
-// touch pan
-let lt=null;vp.addEventListener('touchstart',e=>{if(e.touches.length===1)lt={x:e.touches[0].clientX,y:e.touches[0].clientY,tx,ty};});
-vp.addEventListener('touchmove',e=>{if(lt&&e.touches.length===1){tx=lt.tx+(e.touches[0].clientX-lt.x);ty=lt.ty+(e.touches[0].clientY-lt.y);stage.style.transition='none';apply();}},{passive:true});
+vp.addEventListener('wheel',e=>{e.preventDefault();camT=null;const r=vp.getBoundingClientRect();
+ const mx=e.clientX-r.left,my=e.clientY-r.top;const wx=(mx-vp.clientWidth/2)/cam.z+cam.x,wy=(my-vp.clientHeight/2)/cam.z+cam.y;
+ cam.z=Math.max(.35,Math.min(2.2,cam.z*(e.deltaY<0?1.12:.89)));
+ cam.x=wx-(mx-vp.clientWidth/2)/cam.z;cam.y=wy-(my-vp.clientHeight/2)/cam.z;apply();},{passive:false});
+let lt=null;vp.addEventListener('touchstart',e=>{if(e.touches.length===1){lt={x:e.touches[0].clientX,y:e.touches[0].clientY,c:{...cam}};camT=null;}});
+vp.addEventListener('touchmove',e=>{if(lt&&e.touches.length===1){cam.x=lt.c.x-(e.touches[0].clientX-lt.x)/cam.z;cam.y=lt.c.y-(e.touches[0].clientY-lt.y)/cam.z;apply();}},{passive:true});
 
-/* ---- boot ---- */
-render('journey');fitScene();
-setTimeout(()=>document.getElementById('ovbar').style.width='5%',600);
-window.addEventListener('resize',fitScene);
+/* keyboard */
+window.addEventListener('keydown',e=>{
+ if(e.key>='1'&&e.key<='5'){go(KEYS[+e.key-1]);}
+ else if(e.key==='f'||e.key==='F'){fitScene();}
+ else if(e.key===' '){e.preventDefault();toggleTour();}
+ else if(e.key==='Escape'){closePanel();}
+ else if(e.key==='ArrowRight'){go(KEYS[(KEYS.indexOf(cur)+1)%KEYS.length]);}
+ else if(e.key==='ArrowLeft'){go(KEYS[(KEYS.indexOf(cur)+KEYS.length-1)%KEYS.length]);}
+});
+
+/* minimap */
+const mm=document.getElementById('mm');let mmBounds=null;
+function buildMinimap(s){let a=1e9,b=1e9,c=-1e9,d=-1e9;
+ s.nodes.forEach(n=>{a=Math.min(a,n.x);b=Math.min(b,n.y);c=Math.max(c,n.x);d=Math.max(d,n.y);});
+ const pad=260;a-=pad;b-=pad;c+=pad;d+=pad;mmBounds={a,b,w:c-a,h:d-b};
+ const sx=200/(c-a),sy=110/(d-b);mm.innerHTML='';
+ s.edges.forEach(e=>{const na=s.nodes.find(n=>n.id===e[0]),nb=s.nodes.find(n=>n.id===e[1]);if(!na||!nb)return;
+  const l=document.createElementNS('http://www.w3.org/2000/svg','line');
+  l.setAttribute('x1',(na.x-a)*sx);l.setAttribute('y1',(na.y-b)*sy);l.setAttribute('x2',(nb.x-a)*sx);l.setAttribute('y2',(nb.y-b)*sy);
+  l.setAttribute('stroke','rgba(120,140,220,.4)');l.setAttribute('stroke-width','1');mm.appendChild(l);});
+ s.nodes.forEach(n=>{const c2=document.createElementNS('http://www.w3.org/2000/svg','circle');
+  c2.setAttribute('cx',(n.x-a)*sx);c2.setAttribute('cy',(n.y-b)*sy);c2.setAttribute('r',3);c2.setAttribute('fill',n.clr);mm.appendChild(c2);});
+ const rect=document.createElementNS('http://www.w3.org/2000/svg','rect');rect.id='mmview';
+ rect.setAttribute('fill','rgba(34,211,238,.12)');rect.setAttribute('stroke',C.cyan);rect.setAttribute('stroke-width','1');mm.appendChild(rect);
+}
+mm.addEventListener('click',e=>{const r=mm.getBoundingClientRect();const px=(e.clientX-r.left)/r.width,py=(e.clientY-r.top)/r.height;
+ tween(mmBounds.a+px*mmBounds.w,mmBounds.b+py*mmBounds.h,cam.z,500);});
+function updateMinimap(){if(!mmBounds)return;const rect=document.getElementById('mmview');if(!rect)return;
+ const sx=200/mmBounds.w,sy=110/mmBounds.h;const W=vp.clientWidth,H=vp.clientHeight;
+ const vw=W/cam.z,vh=H/cam.z,vx=cam.x-vw/2,vy=cam.y-vh/2;
+ rect.setAttribute('x',(vx-mmBounds.a)*sx);rect.setAttribute('y',(vy-mmBounds.b)*sy);
+ rect.setAttribute('width',Math.max(4,vw*sx));rect.setAttribute('height',Math.max(4,vh*sy));}
+
+/* auto-tour */
+let tour=false,tourTimer=null,tourManual=false;
+function toggleTour(){tour=!tour;document.getElementById('tourbtn').classList.toggle('on',tour);
+ document.getElementById('tourbtn').textContent=tour?'⏸':'▶';
+ if(tour){tourManual=true;tourStep();}else clearTimeout(tourTimer);}
+function tourStep(){if(!tour)return;tourTimer=setTimeout(()=>{
+ const ni=(KEYS.indexOf(cur)+1)%KEYS.length;go(KEYS[ni]);
+ setTimeout(()=>{const ns=SCENES[cur].nodes;let i=0;const cyc=()=>{if(!tour)return;const n=ns[i%ns.length];
+   openPanel(n);flyTo(n);i++;if(i<=ns.length)setTimeout(cyc,1600);else tourStep();};setTimeout(cyc,700);},800);
+},900);}
+function stopTourIfManual(){if(tour&&!tourManual){}tourManual=false;}
+
+/* master loop */
+function loop(now){
+ if(camT){let t=(now-camT.t0)/camT.dur;if(t>=1){t=1;}const e=ease(t);
+  cam.x=camT.x0+(camT.x1-camT.x0)*e;cam.y=camT.y0+(camT.y1-camT.y0)*e;cam.z=camT.z0+(camT.z1-camT.z0)*e;apply();if(t>=1)camT=null;}
+ parts.forEach(p=>{p.t+=p.sp;if(p.t>1)p.t=0;const pt=p.path.getPointAtLength(p.t*p.len);
+  p.el.setAttribute('cx',pt.x);p.el.setAttribute('cy',pt.y);});
+ updateMinimap();drawConstellation();requestAnimationFrame(loop);
+}
+
+/* constellation bg */
+const cnv=document.getElementById('constellation'),cx2=cnv.getContext('2d');let cps=[];
+function initC(){cnv.width=innerWidth;cnv.height=innerHeight;cps=[];const n=Math.min(80,Math.floor(innerWidth/22));
+ for(let i=0;i<n;i++)cps.push({x:Math.random()*cnv.width,y:Math.random()*cnv.height,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25});}
+function drawConstellation(){cx2.clearRect(0,0,cnv.width,cnv.height);
+ for(const p of cps){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>cnv.width)p.vx*=-1;if(p.y<0||p.y>cnv.height)p.vy*=-1;}
+ for(let i=0;i<cps.length;i++){const a=cps[i];
+  cx2.beginPath();cx2.arc(a.x,a.y,1.3,0,7);cx2.fillStyle='rgba(150,180,255,.55)';cx2.fill();
+  for(let j=i+1;j<cps.length;j++){const b=cps[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.hypot(dx,dy);
+   if(d<130){cx2.beginPath();cx2.moveTo(a.x,a.y);cx2.lineTo(b.x,b.y);
+    cx2.strokeStyle=`rgba(99,130,246,${.12*(1-d/130)})`;cx2.lineWidth=1;cx2.stroke();}}}
+}
+addEventListener('resize',()=>{initC();fitScene(true);});
+
+/* boot */
+function enter(){document.getElementById('intro').classList.add('gone');
+ setTimeout(()=>document.getElementById('ovbar').style.width='5%',400);}
+initC();render('journey');fitScene(true);requestAnimationFrame(loop);
 </script>
 </body>
 </html>
