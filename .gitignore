@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+*.egg-info/
+
+# Node / TypeScript
+node_modules/
+dist/
+*.tsbuildinfo
+.env
+.env.*
+
+# Data / local
+*.sqlite
+*.duckdb
+*.db
+logs/
+*.log
+
+# Obsidian (keep notes, ignore local workspace state)
+.obsidian/workspace*
+.obsidian/cache
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
