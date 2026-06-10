@@ -153,7 +153,7 @@ function openDetail(n){sel=n.id;focusPath(n.id);
     <div class="cvp-meta">${n.status?`<span class="cvp-tag">${n.status}</span>`:""}${(n.tags||[]).map(t=>`<span class="cvp-tag ghost">${t}</span>`).join("")}</div>
     ${n.d?`<ul>${n.d.map(x=>`<li>${x}</li>`).join("")}</ul>`:""}
     ${liveHtml}
-    ${n.doc?`<a href="${DOC}${n.doc}" target="_blank">Open full write-up ↗</a>`:""}`;
+    ${n.doc?`<a href="${DOC}${n.doc.replace(/\/$/,'')}.md" target="_blank">Open full write-up ↗</a>`:""}`;
   p.classList.add("open");}
 function closeDetail(){sel=null;unfocus();const p=document.getElementById("cvpanel");if(p)p.classList.remove("open");
   document.querySelectorAll(".cv-node").forEach(e=>e.classList.remove("sel"));}

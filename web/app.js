@@ -129,7 +129,7 @@ function taskRow(t){const done=t.status==="Done";const pr={Critical:"red",High:"
 function viewProject(){
   const steps=[["1","Phase 0","Learn + Break · Wk 0-6","active"],["2","Phase 1","OSS Scanner · M1-4",""],
     ["3","Phase 2","Runtime Gateway · M4-10",""],["4","Phase 3","Hosted Layer · M10-18",""]];
-  const docs=[["Roadmap","roadmap/"],["Architecture","architecture/"],["Threat model","threat-model/"],["Platform / RBAC","platform/"],["Improvements","improvements/"]];
+  const docs=[["▶ Getting started (do this first)","getting-started/"],["Roadmap","roadmap/"],["Architecture","architecture/"],["Threat model","threat-model/"],["Platform / RBAC","platform/"],["Improvements","improvements/"]];
   const DOC="https://github.com/rudraxdevelopment98-cell/shiva/blob/claude/dazzling-galileo-j9yt04/docs/";
   return `<div class="page-h"><div><h1>Project Roadmap</h1><p>The 18-month plan, by phase, with decision gates.</p></div></div>
    <div class="card"><div class="bd" style="padding:30px 26px"><div class="stepper">${steps.map(s=>`<div class="step ${s[3]}">
@@ -142,7 +142,7 @@ function viewProject(){
          <li>Publish a write-up per attack — learning + credibility.</li></ul></div></div>
      <div class="card"><div class="hd"><h3>Reference documents</h3></div><div class="bd"><div class="tlist">
        ${docs.map(d=>`<div class="titem"><div style="flex:1"><div class="tt">${d[0]}</div><div class="meta">Markdown · GitHub</div></div>
-         <a class="btn sm" href="${DOC}${d[1]}" target="_blank">Open ↗</a></div>`).join("")}</div></div></div>
+         <a class="btn sm" href="${DOC}${d[1].replace(/\/$/,'')}.md" target="_blank">Open ↗</a></div>`).join("")}</div></div></div>
    </div>`;
 }
 function viewCanvas(){

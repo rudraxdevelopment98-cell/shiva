@@ -29,7 +29,7 @@ function _date(off){const d=new Date();d.setDate(d.getDate()+(off||0));return d.
 /* ---------------- LOCAL ---------------- */
 const LocalStore={
   mode:"local",
-  KEY:"shiva_portal_v3",
+  KEY:"shiva_portal_v4",
   db:null,
   _load(){try{this.db=JSON.parse(localStorage.getItem(this.KEY))}catch(e){this.db=null}
     if(!this.db)this._seed();return this.db},
@@ -38,9 +38,13 @@ const LocalStore={
     users:[{id:_uid(),name:"Kuldeep",username:"kuldeep",password:"Shiva@2026",role:"Owner",
       access:SECTIONS.map(s=>s.id),status:"Active",created:now}],
     tasks:[
-      {id:_uid(),title:"Install MCP SDKs (Python + TypeScript)",desc:"Day 1 of Phase 0",assignee:"kuldeep",due:_date(1),priority:"High",status:"To do",phase:"P0",created:now},
-      {id:_uid(),title:"Build first MCP server (read_file tool)",desc:"Day 2 of Phase 0",assignee:"kuldeep",due:_date(2),priority:"High",status:"To do",phase:"P0",created:now},
-      {id:_uid(),title:"Reproduce tool poisoning (attack #1)",desc:"Day 3 — the key demo",assignee:"kuldeep",due:_date(3),priority:"Critical",status:"To do",phase:"P0",created:now}],
+      {id:_uid(),title:"Day 1 · Install the MCP SDK",desc:"pip install + Claude Desktop as the client",assignee:"kuldeep",due:_date(1),priority:"High",status:"To do",phase:"P0",created:now},
+      {id:_uid(),title:"Day 2 · Run benign_server.py",desc:"mcp dev — learn the tool call flow",assignee:"kuldeep",due:_date(2),priority:"High",status:"To do",phase:"P0",created:now},
+      {id:_uid(),title:"Day 3 · Reproduce tool poisoning (attack #1)",desc:"The key demo — screen-record it",assignee:"kuldeep",due:_date(3),priority:"Critical",status:"To do",phase:"P0",created:now},
+      {id:_uid(),title:"Day 4 · Write up attack #1 + push",desc:"docs/attacks/01-tool-poisoning.md",assignee:"kuldeep",due:_date(4),priority:"High",status:"To do",phase:"P0",created:now},
+      {id:_uid(),title:"Day 5 · Read sources + run attacks #2 & #3",desc:"drift + escalation servers; log in evidence.md",assignee:"kuldeep",due:_date(5),priority:"Medium",status:"To do",phase:"P0",created:now},
+      {id:_uid(),title:"Day 6 · Sketch the scanner's 3 checks",desc:"hidden instructions · perms · description hashing",assignee:"kuldeep",due:_date(6),priority:"Medium",status:"To do",phase:"P0",created:now},
+      {id:_uid(),title:"Day 7 · Decision gate 0",desc:"In for Phase 1? Log it in improvements.md",assignee:"kuldeep",due:_date(7),priority:"Medium",status:"To do",phase:"P0",created:now}],
     docs:[],
     research:[{id:_uid(),title:"Simon Willison — MCP prompt injection",url:"https://simonwillison.net/tags/model-context-protocol/",category:"Reference",note:"Core read on why MCP has injection problems.",by:"kuldeep",date:now}],
     activity:[{id:_uid(),user:"system",action:"Portal initialised",time:now}]};

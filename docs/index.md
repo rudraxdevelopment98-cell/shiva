@@ -18,6 +18,7 @@ This is the **control room** — every chart and tracker for the project, all li
 | **[Platform](platform.md)** | The hosted app (accounts, admin, access control) | Mindmap + RBAC chart |
 | **[Improvements](improvements.md)** | How to sharpen the plan | Notes + decision log |
 | **[Evidence / claims](evidence.md)** | Are our market claims true | Sourced living doc |
+| **[▶ Getting started](getting-started.md)** | Do-this-now first week (Phase 0) | Guide |
 | **[How to view](how-to-view.md)** | Tooling setup (free) | Guide |
 | **[Mac + SSD setup](setup-mac.md)** | Run it all off an external SSD + GitHub | Guide |
 | **[Supabase setup](supabase-setup.md)** | Make the portal real (multi-user auth + DB) | Guide |
