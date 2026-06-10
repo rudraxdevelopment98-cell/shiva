@@ -77,10 +77,11 @@ function renderShell(){
    </main></div>`;
 }
 function renderRoute(){
-  const map={dashboard:viewDashboard,project:viewProject,tasks:viewTasks,documents:viewDocuments,
+  const map={dashboard:viewDashboard,project:viewProject,canvas:viewCanvas,tasks:viewTasks,documents:viewDocuments,
     research:viewResearch,activity:viewActivity,admin:viewAdmin,profile:viewProfile};
   const sec=SECTIONS.find(s=>s.id===route);const cb=document.getElementById("crumb");if(cb)cb.textContent=sec?sec.label:"Dashboard";
-  document.getElementById("content").innerHTML=(map[route]||viewDashboard)()}
+  document.getElementById("content").innerHTML=(map[route]||viewDashboard)();
+  if(route==="canvas"&&window.initCanvas)setTimeout(window.initCanvas,0)}
 function quickSearch(q){if(!["tasks","documents","admin"].includes(route))return;const t=q.toLowerCase();
   document.querySelectorAll("[data-srch]").forEach(el=>{el.style.display=el.dataset.srch.toLowerCase().includes(t)?"":"none"})}
 
@@ -141,6 +142,18 @@ function viewProject(){
      <div class="card"><div class="hd"><h3>Reference documents</h3></div><div class="bd"><div class="tlist">
        ${docs.map(d=>`<div class="titem"><div style="flex:1"><div class="tt">${d[0]}</div><div class="meta">Markdown · GitHub</div></div>
          <a class="btn sm" href="${DOC}${d[1]}" target="_blank">Open ↗</a></div>`).join("")}</div></div></div>
+   </div>`;
+}
+function viewCanvas(){
+  const leg=[["Phase","#6d5efc"],["Build","#22d3ee"],["Hosted","#34d399"],["Threat","#fb7185"],["Platform","#a855f7"]];
+  return `<div class="page-h"><div><h1>Project Map</h1><p>The whole project as a linked structure — drag to pan, scroll to zoom, click any node.</p></div></div>
+   <div class="cv-wrap" id="cvwrap">
+     <div class="cv-legend">${leg.map(l=>`<span><i style="background:${l[1]}"></i>${l[0]}</span>`).join("")}</div>
+     <div class="cv-vp" id="cvvp"><div class="cv-stage" id="cvstage"><svg id="cvedges" style="position:absolute;overflow:visible"></svg></div></div>
+     <div class="cv-tools">
+       <div class="btn sm" onclick="cvZoom(1.2)">+</div><div class="btn sm" onclick="cvZoom(.83)">−</div>
+       <div class="btn sm" onclick="cvFit()">⛶ Fit</div></div>
+     <div class="cv-panel" id="cvpanel"></div>
    </div>`;
 }
 function viewTasks(){

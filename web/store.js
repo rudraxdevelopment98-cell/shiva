@@ -8,6 +8,7 @@
 const SECTIONS=[
   {id:"dashboard",label:"Dashboard",ic:"▦"},
   {id:"project",label:"Project Roadmap",ic:"◎"},
+  {id:"canvas",label:"Project Map",ic:"⬡"},
   {id:"tasks",label:"Tasks",ic:"✓"},
   {id:"documents",label:"Documents",ic:"▤"},
   {id:"research",label:"Research",ic:"⌕"},
@@ -17,10 +18,10 @@ const SECTIONS=[
 ];
 const ROLES={
   Owner:{all:true},
-  Admin:{access:["dashboard","project","tasks","documents","research","activity","admin","profile"]},
-  Manager:{access:["dashboard","project","tasks","documents","research","activity","profile"]},
-  Member:{access:["dashboard","project","tasks","documents","research","profile"]},
-  Viewer:{access:["dashboard","project","documents","research","profile"]},
+  Admin:{access:["dashboard","project","canvas","tasks","documents","research","activity","admin","profile"]},
+  Manager:{access:["dashboard","project","canvas","tasks","documents","research","activity","profile"]},
+  Member:{access:["dashboard","project","canvas","tasks","documents","research","profile"]},
+  Viewer:{access:["dashboard","project","canvas","documents","research","profile"]},
 };
 function _uid(){return Math.random().toString(36).slice(2,10)}
 function _date(off){const d=new Date();d.setDate(d.getDate()+(off||0));return d.toISOString().slice(0,10)}
@@ -28,7 +29,7 @@ function _date(off){const d=new Date();d.setDate(d.getDate()+(off||0));return d.
 /* ---------------- LOCAL ---------------- */
 const LocalStore={
   mode:"local",
-  KEY:"shiva_portal_v2",
+  KEY:"shiva_portal_v3",
   db:null,
   _load(){try{this.db=JSON.parse(localStorage.getItem(this.KEY))}catch(e){this.db=null}
     if(!this.db)this._seed();return this.db},
