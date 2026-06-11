@@ -9,7 +9,7 @@ const CLR={root:"#8b5cf6",phase:"#6d5efc",build:"#22d3ee",hosted:"#34d399",threa
 const COLW=320, ROWH=104, CX=120;
 
 /* ---- the project as a tree (+ cross-links) ---- */
-const TREE={id:"root",t:"SHIVA",s:"MCP security",ic:"☩",cat:"root",status:"Active",
+const SHIVA_TREE={id:"root",t:"SHIVA",s:"MCP security",ic:"☩",cat:"root",status:"Active",
   d:["Own the detection + policy layer where AI agents meet their tools.","Open-source first, hosted product later."],doc:"overview/",
   ch:[
   {id:"journey",t:"Journey",s:"4 phases · 18 mo",ic:"◎",cat:"phase",collapsible:1,status:"On track",doc:"roadmap/",
@@ -48,17 +48,27 @@ const TREE={id:"root",t:"SHIVA",s:"MCP security",ic:"☩",cat:"root",status:"Act
       d:["Owner · Admin · Manager · Member · Viewer.","Per-section access."]},
     {id:"admin",t:"Admin",s:"users + audit",ic:"⚙",cat:"platform",status:"Done",doc:"platform/",d:["Create users, assign roles."]}]}
   ]};
-const REL=[["range","scanner"],["range","gateway"],["scanner","registry"],["gateway","policy"],["registry","policy"],["policy","comp"]];
+const SHIVA_REL=[["range","scanner"],["range","gateway"],["scanner","registry"],["gateway","policy"],["registry","policy"],["policy","comp"]];
 
-/* ---- build index, parents, branchIds ---- */
-const ALL={};
-(function index(n,parent){n.parent=parent;ALL[n.id]=n;(n.ch||[]).forEach(c=>index(c,n));})(TREE,null);
-TREE.branch=null;
-TREE.ch.forEach(b=>(function mark(n){n.branch=b.id;(n.ch||[]).forEach(mark)})(b));
+/* ---- project-aware tree ---- */
+let TREE=SHIVA_TREE, REL=SHIVA_REL, ALL={};
+function buildIndex(){ALL={};
+  (function index(n,parent){n.parent=parent;ALL[n.id]=n;(n.ch||[]).forEach(c=>index(c,n));})(TREE,null);
+  TREE.branch=null;(TREE.ch||[]).forEach(b=>(function mark(n){n.branch=b.id;(n.ch||[]).forEach(mark)})(b));}
+function genericTree(){const info=(window.activeProjectInfo&&window.activeProjectInfo())||{name:"Project",key:"P"};
+  return {id:"root",t:info.name,s:"project",ic:info.key||"◆",cat:"root",status:"Active",
+    d:["Phases and milestones for "+info.name+"."],ch:[
+    {id:"journey",t:"Journey",s:"phases",ic:"◎",cat:"phase",collapsible:1,ch:[
+      {id:"p0",t:"Phase 1",s:"Planning",ic:"①",cat:"phase",phase:"P0",current:1,status:"Active",d:["Scope, plan, set up."]},
+      {id:"p1",t:"Phase 2",s:"Build",ic:"②",cat:"phase",phase:"P1",status:"Planned",d:["Core build."]},
+      {id:"p2",t:"Phase 3",s:"Test",ic:"③",cat:"phase",phase:"P2",status:"Planned",d:["Test + harden."]},
+      {id:"p3",t:"Phase 4",s:"Launch",ic:"④",cat:"phase",phase:"P3",status:"Planned",d:["Ship + iterate."]}]}]};}
 
 let cam={x:0,y:0,z:1}, sel=null, collapsed=new Set(), hidden=new Set(), placed=[];
 
-window.initCanvas=function(){cam={x:0,y:0,z:1};sel=null;render();fit();bindVP();};
+window.initCanvas=function(){const pid=(window.activeProject&&window.activeProject())||"shiva";
+  if(pid==="shiva"){TREE=SHIVA_TREE;REL=SHIVA_REL;}else{TREE=genericTree();REL=[];}
+  buildIndex();collapsed=new Set();hidden=new Set();cam={x:0,y:0,z:1};sel=null;render();fit();bindVP();};
 
 function visibleChildren(n){return (collapsed.has(n.id)?[]:(n.ch||[])).filter(c=>!hidden.has(c.branch))}
 function layout(){let yc=0;placed=[];
