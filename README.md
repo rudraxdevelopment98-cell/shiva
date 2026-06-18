@@ -1,58 +1,54 @@
-# Shiva — MCP / Agent-Tool Security
+# 🎚️ Auto Mix & Master
 
-> **Codename:** Shiva *(repo name — guardian/destroyer; public product name TBD, see [improvements](docs/improvements.md#0-naming))*
-> **Owner:** Kuldeep · **Horizon:** 18 months
-> **Thesis:** AI agents are getting real tools faster than anyone is securing the layer where tools meet the agent. Own the **detection + policy layer** for the Model Context Protocol (MCP) — open-source first, hosted product later.
+> Working title: **Mastr** (name TBD). Owner: Kuldeep · Solo build.
+> An automatic **mixing & mastering** tool — drop in a track (or stems) and get
+> back a polished, loudness-correct master, with clear before/after metrics.
 
----
-
-> 🌐 **Live site:** once GitHub Pages is enabled (Settings → Pages → Source: *GitHub Actions*), all charts are published at
-> **https://rudraxdevelopment98-cell.github.io/shiva/** — one clean link, with nav + search. Built automatically on every push via [`.github/workflows/docs.yml`](.github/workflows/docs.yml).
-
-## 🧭 This repo is the control room
-
-Everything about the project — goal, where we are, what's next, what we're building, what we're learning — lives here as **linked Markdown + Mermaid charts**. It renders automatically on GitHub, and you can open the same folder in **[Obsidian](docs/how-to-view.md)** for an interactive mindmap/graph view.
-
-| Doc | What it answers | Chart type |
-|---|---|---|
-| **[Overview / Mindmap](docs/overview.md)** | What is the whole thing, at a glance | Mindmap |
-| **[Roadmap](docs/roadmap.md)** | Where are we going, by when | Gantt + phase state machine |
-| **[Progress board](docs/progress.md)** | Where are we *right now* | Kanban + current sprint |
-| **[Learning tracker](docs/learning.md)** | What do I need to learn, what's done | Mindmap + checklist |
-| **[Architecture](docs/architecture.md)** | What are we building | System flowcharts |
-| **[Threat model](docs/threat-model.md)** | What are we defending against | Attack flow + MITRE/OWASP map |
-| **[Platform](docs/platform.md)** | The hosted app we'll build (accounts, admin, access control) | Mindmap + RBAC chart |
-| **[Improvements](docs/improvements.md)** | How to make the plan sharper | Notes + decision log |
-| **[Evidence / claims](docs/evidence.md)** | Are our market claims actually true | Sourced living doc |
-| **[▶ Getting started](docs/getting-started.md)** | Do-this-now first week (Phase 0) | Guide |
-| **[How to view these charts](docs/how-to-view.md)** | Tooling setup (free) | Guide |
-| **[Mac + SSD setup](docs/setup-mac.md)** | Run it all off an external SSD + GitHub | Guide |
-| **[Supabase setup](docs/supabase-setup.md)** | Make the portal real (multi-user auth + DB) | Guide |
+This repo was reset from a previous project. Fresh start.
 
 ---
 
-## 📍 Status snapshot
+## What we're building
 
-```mermaid
-flowchart LR
-    P0["Phase 0\nLearn + Break\nWeeks 0-6"]:::now --> P1["Phase 1\nOSS Scanner\nMonths 1-4"]
-    P1 --> P2["Phase 2\nRuntime Gateway\nMonths 4-10"]
-    P2 --> P3["Phase 3\nHosted Layer\nMonths 10-18"]
+A tool that takes raw audio and makes it sound finished — automatically:
 
-    classDef now fill:#ffd966,stroke:#b8860b,stroke-width:3px,color:#000;
+- **Auto-master (first):** a finished stereo mix → a clean master at a chosen
+  streaming loudness target (e.g. −14 LUFS), with true-peak limiting, gentle
+  tonal balance, and a before/after report (LUFS, true peak, dynamic range).
+- **Reference match (next):** "make my track sound like *this* reference."
+- **Auto-mix (later):** balance multiple stems (levels, panning, EQ, glue).
+
+The hard part — and the value — is the **audio engine**. UI comes on top of it.
+
+## Engine MVP (in this repo)
+
+`engine/` is a Python audio engine. The v0 master uses a **two-pass EBU R128
+loudnorm** (via ffmpeg) — a real, robust master for loudness + true-peak
+control — plus an analysis pass that reports the numbers.
+
+```bash
+# on your Mac
+brew install ffmpeg
+pip install -r requirements.txt           # (python deps for later stages)
+
+python cli.py master input.wav output.wav --lufs -14 --tp -1
+python cli.py analyze output.wav          # prints LUFS / true peak / etc.
 ```
 
-**We are here:** Phase 0, Day 0 — repo just scaffolded. Next action: see the **[first 7 days](docs/progress.md#first-7-days)**.
+## Roadmap
 
----
+| Phase | What | Tech |
+|---|---|---|
+| **0 — Engine v0** | Loudness master (loudnorm 2-pass) + analysis report | ffmpeg |
+| **1 — Master chain** | EQ, multiband compression, glue, limiter | `pedalboard` (Spotify) |
+| **2 — Reference match** | Match a reference track's tone + loudness | `matchering` |
+| **3 — UI** | Upload → process → A/B compare + waveforms + download | web (TBD) |
+| **4 — Auto-mix** | Balance stems: levels, pan, EQ, dynamics | DSP + heuristics/ML |
 
-## How to keep this alive
+## Why Python for the engine
+Audio DSP/ML lives in Python: `pedalboard`, `matchering`, `pyloudnorm`,
+`soundfile`, `librosa`, plus `ffmpeg` for I/O. The engine stays UI-agnostic so
+we can put a CLI, a web app, or a desktop app on top of the same core.
 
-This is a *living* dashboard, not a one-time doc. The rule:
-
-- When you **learn** something → tick it in [learning.md](docs/learning.md).
-- When you **finish** a task → move the card in [progress.md](docs/progress.md).
-- When you **decide** something → log it in [improvements.md](docs/improvements.md#decision-log).
-- When you **cite a stat** → it must have a row in [evidence.md](docs/evidence.md).
-
-One commit per meaningful update keeps the git history a record of the journey.
+## Status
+Phase 0 scaffold. See [`docs/plan.md`](docs/plan.md).

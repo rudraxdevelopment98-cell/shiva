@@ -1,0 +1,15 @@
+# System dependency (install separately): ffmpeg  —  brew install ffmpeg
+#
+# Python deps grow with the roadmap. Phase 0 (loudness master) needs only ffmpeg.
+# Uncomment as we reach each phase:
+
+# Phase 1 — master chain (EQ / compression / limiting)
+# pedalboard>=0.9
+# soundfile>=0.12
+# numpy>=1.26
+
+# Phase 2 — reference matching
+# matchering>=2.0
+
+# Phase 0 analysis helpers (optional)
+# pyloudnorm>=0.1
