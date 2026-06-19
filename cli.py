@@ -6,7 +6,7 @@
 """
 import argparse
 import sys
-from engine import master, analyze, EngineError
+from engine import master, analyze, automix, EngineError
 
 
 def main() -> int:
@@ -18,6 +18,16 @@ def main() -> int:
     m.add_argument("output")
     m.add_argument("--lufs", type=float, default=-14.0, help="target integrated loudness (default -14)")
     m.add_argument("--tp", type=float, default=-1.0, help="max true peak dBTP (default -1)")
+    m.add_argument("--preset", choices=["clean", "warm", "bright", "loud"], default=None,
+                   help="optional tonal/dynamics chain (needs pedalboard)")
+
+    x = sub.add_parser("mix", help="auto-mix 2+ stems into a mastered track")
+    x.add_argument("stems", nargs="+", help="stem files (drums, bass, vocals, …)")
+    x.add_argument("-o", "--output", required=True, help="output file")
+    x.add_argument("--lufs", type=float, default=-14.0, help="final loudness target (default -14)")
+    x.add_argument("--tp", type=float, default=-1.0, help="max true peak dBTP (default -1)")
+    x.add_argument("--preset", choices=["clean", "warm", "bright", "loud"], default=None,
+                   help="optional tonal/dynamics chain on the bus (needs pedalboard)")
 
     a = sub.add_parser("analyze", help="report loudness/peak of a track")
     a.add_argument("input")
@@ -26,11 +36,19 @@ def main() -> int:
     try:
         if args.cmd == "master":
             before = analyze(args.input)
-            res = master(args.input, args.output, target_lufs=args.lufs, true_peak=args.tp)
+            res = master(args.input, args.output, target_lufs=args.lufs,
+                         true_peak=args.tp, preset=args.preset)
             after = analyze(args.output)
             print("— before —"); print(before.pretty())
             print("\n— after —"); print(after.pretty())
-            print(f"\n✓ Mastered → {res.output}")
+            print(f"\n✓ Mastered → {res.output}" + (f"  (preset: {res.preset})" if res.preset else ""))
+        elif args.cmd == "mix":
+            res = automix(args.stems, args.output, target_lufs=args.lufs,
+                          true_peak=args.tp, preset=args.preset)
+            after = analyze(args.output)
+            print(f"mixed {res.stems} stems →")
+            print(after.pretty())
+            print(f"\n✓ Mix master → {res.output}" + (f"  (preset: {res.preset})" if res.preset else ""))
         elif args.cmd == "analyze":
             print(analyze(args.input).pretty())
     except EngineError as e:

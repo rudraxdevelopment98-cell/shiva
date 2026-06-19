@@ -27,23 +27,39 @@ loudnorm** (via ffmpeg) — a real, robust master for loudness + true-peak
 control — plus an analysis pass that reports the numbers.
 
 ```bash
-# on your Mac
+# on your Mac (one-time)
 brew install ffmpeg
-pip install -r requirements.txt           # (python deps for later stages)
+pip install -r requirements.txt
 
-python cli.py master input.wav output.wav --lufs -14 --tp -1
-python cli.py analyze output.wav          # prints LUFS / true peak / etc.
+# Desktop app (native window) — the main way to use it
+python desktop.py
+
+# …or the same UI in a browser
+python app.py            # → http://127.0.0.1:5000
+
+# …or the command line
+python cli.py master input.wav out.wav --lufs -14 --preset warm
+python cli.py mix drums.wav bass.wav vocals.wav -o mix.wav --lufs -14 --preset clean
+python cli.py analyze out.wav
 ```
+
+## What works now
+- **Master** a finished mix to a loudness target (−14 / −9 / −16 LUFS) with
+  true-peak limiting + an optional tone chain (`clean` / `warm` / `bright` / `loud`).
+- **Auto-mix** 2+ stems: loudness-balance each → sum on a headroom bus → master.
+- **Analyze**: LUFS / true peak / dynamic range, before & after.
+- **Desktop app** (pywebview) and a browser app (Flask) over the same engine.
 
 ## Roadmap
 
-| Phase | What | Tech |
-|---|---|---|
-| **0 — Engine v0** | Loudness master (loudnorm 2-pass) + analysis report | ffmpeg |
-| **1 — Master chain** | EQ, multiband compression, glue, limiter | `pedalboard` (Spotify) |
-| **2 — Reference match** | Match a reference track's tone + loudness | `matchering` |
-| **3 — UI** | Upload → process → A/B compare + waveforms + download | web (TBD) |
-| **4 — Auto-mix** | Balance stems: levels, pan, EQ, dynamics | DSP + heuristics/ML |
+| Phase | What | Tech | State |
+|---|---|---|---|
+| **0 — Engine** | Loudness master + analysis | ffmpeg | ✅ |
+| **1 — Master chain** | EQ, compression, glue, limiter | `pedalboard` | ✅ presets |
+| **1b — Auto-mix v0** | Balance stems → bus → master | ffmpeg | ✅ |
+| **2 — Reference match** | Match a reference track's tone + loudness | `matchering` | next |
+| **3 — Desktop polish** | A/B, waveforms, batch, presets UI | pywebview | next |
+| **4 — Smarter mix** | Per-stem EQ / pan / role-aware balance | DSP + ML | later |
 
 ## Why Python for the engine
 Audio DSP/ML lives in Python: `pedalboard`, `matchering`, `pyloudnorm`,
