@@ -7,15 +7,23 @@ hum-to-instrument concept — see [`../docs/hum-to-instrument.md`](../docs/hum-t
 ## Try it (on your Mac)
 ```bash
 pip install -r hum2inst/requirements.txt
-python -m hum2inst.transcribe myhum.wav -o part.mid --bpm 90 --key Amin
-# then drag part.mid onto a bass / piano / synth track in your DAW
+
+# hum a bassline → clean, in-key MIDI + an audio preview you can HEAR
+python -m hum2inst.transcribe myhum.wav -o part.mid \
+       --bpm 90 --key Amin --instrument bass --preview part.wav
+
+# then drag part.mid onto any instrument track in your DAW
 ```
 
 Options:
-- `--bpm` your song's tempo (so it lands on the grid)
-- `--key` your song's key, e.g. `Cmaj`, `Amin`, `F#minpent` (notes get snapped in-key)
+- `--bpm` your song's tempo (so notes land on the grid)
+- `--key` your song's key — `Cmaj`, `Amin`, `F#minpent` (notes snapped in-key)
 - `--grid` quantize resolution (8 / 16 / 32)
-- `--faithful` keep exactly what you hummed (skip key-snapping)
+- **`--faithful`** the *switch*: OFF = corrected to key (default), ON = keep exactly what you hummed
+- `--preview part.wav` render an audio preview to hear it (sine fallback, or real
+  sounds with `--sf2 path/to/soundfont.sf2`)
+- `--instrument` preview sound: `bass`, `piano`, `epiano`, `pluck`, `lead`, `strings`…
+- `--poly` keep polyphony (default is a clean **monophonic** melodic line)
 
 ## What it does
 1. **Transcribe** your hum to notes (Spotify `basic-pitch`).

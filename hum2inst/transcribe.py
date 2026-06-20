@@ -90,31 +90,64 @@ def snap_key(midi, key: str):
     return midi
 
 
-def run(wav: str, out: str, bpm: float = 90.0, key: str = "Cmaj",
-        grid: int = 16, correct: bool = True) -> HumResult:
-    """Full pipeline → writes a .mid you can drop on any instrument track."""
+def make_monophonic(midi):
+    """Collapse to one note at a time — a clean melodic line for bass/keys.
+
+    Sorts by start (ties: higher pitch wins) and trims any overlap so notes
+    never stack. Turns messy polyphonic transcription into a single hummed line.
+    """
+    for inst in midi.instruments:
+        notes = sorted(inst.notes, key=lambda n: (n.start, -n.pitch))
+        out = []
+        for n in notes:
+            if out and n.start < out[-1].end:
+                if n.start > out[-1].start:
+                    out[-1].end = n.start          # trim previous to this onset
+                else:
+                    continue                        # same onset → keep higher pitch
+            if n.end > n.start:
+                out.append(n)
+        inst.notes = out
+    return midi
+
+
+def run(wav: str, out: str, bpm: float = 90.0, key: str = "Cmaj", grid: int = 16,
+        correct: bool = True, monophonic: bool = True):
+    """Full pipeline → writes a .mid; returns (HumResult, PrettyMIDI)."""
     midi = transcribe(wav)
+    if monophonic:
+        midi = make_monophonic(midi)
     midi = quantize(midi, bpm, grid)
     if correct:
         midi = snap_key(midi, key)
     midi.write(out)
     n = sum(len(i.notes) for i in midi.instruments)
-    return HumResult(output=out, notes=n, bpm=bpm, key=key)
+    return HumResult(output=out, notes=n, bpm=bpm, key=key), midi
 
 
 if __name__ == "__main__":
     import argparse
-    p = argparse.ArgumentParser(description="Hum → clean, in-key MIDI part")
-    p.add_argument("wav", help="your hummed/sung/beatboxed clip")
+    p = argparse.ArgumentParser(description="Hum → clean, in-key MIDI part (+ audio preview)")
+    p.add_argument("wav", help="your hummed/sung clip")
     p.add_argument("-o", "--output", required=True, help="output .mid")
     p.add_argument("--bpm", type=float, default=90.0)
     p.add_argument("--key", default="Cmaj", help="e.g. Cmaj, Amin, F#minpent")
     p.add_argument("--grid", type=int, default=16, help="quantize grid (8, 16, 32)")
-    p.add_argument("--faithful", action="store_true", help="don't snap to key")
+    p.add_argument("--faithful", action="store_true", help="switch OFF key-correction (keep exactly what you hummed)")
+    p.add_argument("--poly", action="store_true", help="keep polyphony (default: monophonic melodic line)")
+    p.add_argument("--preview", metavar="OUT.wav", help="also render an audio preview you can hear")
+    p.add_argument("--instrument", default="bass", help="preview sound: bass, piano, epiano, pluck, lead, strings…")
+    p.add_argument("--sf2", help="soundfont (.sf2) for realistic preview (else sine fallback)")
     a = p.parse_args()
     try:
-        r = run(a.wav, a.output, bpm=a.bpm, key=a.key, grid=a.grid, correct=not a.faithful)
-        print(f"✓ {r.notes} notes → {r.output}  ({r.bpm} BPM, key {r.key})")
+        r, midi = run(a.wav, a.output, bpm=a.bpm, key=a.key, grid=a.grid,
+                      correct=not a.faithful, monophonic=not a.poly)
+        mode = "faithful" if a.faithful else f"corrected → key {r.key}"
+        print(f"✓ {r.notes} notes → {r.output}  ({r.bpm} BPM, {mode})")
+        if a.preview:
+            from .preview import render
+            render(midi, a.preview, instrument=a.instrument, sf2=a.sf2)
+            print(f"🔊 preview → {a.preview}  ({a.instrument})")
         print("Drop the .mid on any instrument track in your DAW.")
     except HumError as e:
         raise SystemExit(f"error: {e}")
