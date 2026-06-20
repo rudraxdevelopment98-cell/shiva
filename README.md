@@ -51,6 +51,9 @@ python cli.py analyze out.wav
 - **Reference match**: make your track match the tone + loudness of a song you like.
 - **Analyze**: LUFS / true peak / dynamic range, before & after.
 - **Desktop app** (pywebview) and a browser app (Flask) over the same engine.
+- **Web product**: single-page Master / Mix / Reference flow with drag-and-drop,
+  live metrics, and a freemium gate (3 free renders → paywall). Making payments
+  real (accounts + Stripe + server-side limits): see [`docs/monetization.md`](docs/monetization.md).
 
 ## Roadmap
 
