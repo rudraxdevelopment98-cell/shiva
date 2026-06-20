@@ -1,0 +1,7 @@
+# Hum → Instrument engine (run on your Mac)
+basic-pitch>=0.3      # Spotify's open-source audio→MIDI model
+pretty_midi>=0.2
+librosa>=0.10
+
+# optional: preview the MIDI as audio with a soundfont
+# pyfluidsynth>=1.3
