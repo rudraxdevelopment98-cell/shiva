@@ -7,5 +7,5 @@ pywebview>=5.0
 # Phase 1 — master chain (EQ / compression / limiting). Optional but recommended.
 pedalboard>=0.9
 
-# Phase 2 — reference matching (uncomment when we get there)
-# matchering>=2.0
+# Phase 2 — reference matching ("make mine sound like this")
+matchering>=2.0

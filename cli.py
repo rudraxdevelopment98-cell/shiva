@@ -6,7 +6,7 @@
 """
 import argparse
 import sys
-from engine import master, analyze, automix, EngineError
+from engine import master, analyze, automix, match, EngineError
 
 
 def main() -> int:
@@ -29,6 +29,11 @@ def main() -> int:
     x.add_argument("--preset", choices=["clean", "warm", "bright", "loud"], default=None,
                    help="optional tonal/dynamics chain on the bus (needs pedalboard)")
 
+    r = sub.add_parser("match", help="make a track sound like a reference song")
+    r.add_argument("target", help="your track")
+    r.add_argument("reference", help="the song to match")
+    r.add_argument("-o", "--output", required=True, help="output file")
+
     a = sub.add_parser("analyze", help="report loudness/peak of a track")
     a.add_argument("input")
 
@@ -49,6 +54,10 @@ def main() -> int:
             print(f"mixed {res.stems} stems →")
             print(after.pretty())
             print(f"\n✓ Mix master → {res.output}" + (f"  (preset: {res.preset})" if res.preset else ""))
+        elif args.cmd == "match":
+            res = match(args.target, args.reference, args.output)
+            print(analyze(args.output).pretty())
+            print(f"\n✓ Matched to reference → {res.output}")
         elif args.cmd == "analyze":
             print(analyze(args.input).pretty())
     except EngineError as e:

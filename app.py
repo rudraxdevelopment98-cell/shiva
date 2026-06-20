@@ -12,7 +12,7 @@ import os
 import uuid
 from flask import Flask, request, send_from_directory, render_template_string
 
-from engine import master, analyze, automix, chain, EngineError
+from engine import master, analyze, automix, match, chain, reference, EngineError
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 UP = os.path.join(ROOT, "out", "uploads")
@@ -79,6 +79,27 @@ audio{width:100%;margin-top:8px}.err{color:var(--amber);font-size:14px}
   </div>
   <button type="submit">Mix &amp; master stems</button>
 </form>
+
+<form class="card" method="post" enctype="multipart/form-data" action="/match">
+  <label>Reference match — make your track sound like another song {{ ref_note }}</label>
+  <div class="row">
+    <div><label>Your track</label><input type="file" name="target" accept="audio/*" required></div>
+    <div><label>Reference song</label><input type="file" name="reference" accept="audio/*" required></div>
+  </div>
+  <button type="submit">Match to reference</button>
+</form>
+{% if match_result %}
+<div class="card">
+  <span class="tag ok">✓ matched to reference</span>
+  <div class="metrics" style="margin-top:14px">
+    <div class="m"><div class="k">Loudness</div><div class="v mono">{{ '%.1f'|format(match_after.integrated_lufs) }} <span style="font-size:12px;color:var(--muted)">LUFS</span></div></div>
+    <div class="m"><div class="k">True peak</div><div class="v mono">{{ '%.1f'|format(match_after.true_peak_db) }} <span style="font-size:12px;color:var(--muted)">dBTP</span></div></div>
+    <div class="m"><div class="k">Dynamic range</div><div class="v mono">{{ '%.1f'|format(match_after.loudness_range) }} <span style="font-size:12px;color:var(--muted)">LU</span></div></div>
+  </div>
+  <label style="margin-top:14px">Result</label><audio controls src="/file/masters/{{ match_result.out_name }}"></audio>
+  <a class="dl" href="/file/masters/{{ match_result.out_name }}" download>⬇ Download</a>
+</div>
+{% endif %}
 {% if mix_result %}
 <div class="card">
   <span class="tag ok">✓ mixed {{ mix_result.stems }} stems{% if mix_result.preset %} · {{ mix_result.preset }}{% endif %}</span>
@@ -111,10 +132,14 @@ audio{width:100%;margin-top:8px}.err{color:var(--amber);font-size:14px}
 </div></body></html>"""
 
 
+def _ref_note():
+    return "" if reference.available() else "— install matchering to enable"
+
+
 @app.get("/")
 def index():
     note = "Tone presets active." if chain.available() else "Install pedalboard for tone presets."
-    return render_template_string(PAGE, chain_note=note, result=None, error=None)
+    return render_template_string(PAGE, chain_note=note, ref_note=_ref_note(), result=None, error=None)
 
 
 @app.post("/master")
@@ -166,6 +191,30 @@ def do_mix():
         return render_template_string(PAGE, chain_note=note, error=str(e), result=None)
     return render_template_string(PAGE, chain_note=note, mix_after=after,
         mix_result={"out_name": out_name, "stems": res.stems, "preset": res.preset}, error=None)
+
+
+@app.post("/match")
+def do_match():
+    note = "Tone presets active." if chain.available() else "Install pedalboard for tone presets."
+    tgt = request.files.get("target")
+    ref = request.files.get("reference")
+    if not tgt or not tgt.filename or not ref or not ref.filename:
+        return render_template_string(PAGE, chain_note=note, ref_note=_ref_note(),
+                                      error="Pick both your track and a reference.", result=None)
+    uid = uuid.uuid4().hex[:8]
+    tp = os.path.join(UP, f"{uid}_target{os.path.splitext(tgt.filename)[1] or '.wav'}")
+    rp = os.path.join(UP, f"{uid}_ref{os.path.splitext(ref.filename)[1] or '.wav'}")
+    tgt.save(tp)
+    ref.save(rp)
+    out_name = f"{uid}_matched.wav"
+    out = os.path.join(OUT, out_name)
+    try:
+        match(tp, rp, out)
+        after = analyze(out)
+    except EngineError as e:
+        return render_template_string(PAGE, chain_note=note, ref_note=_ref_note(), error=str(e), result=None)
+    return render_template_string(PAGE, chain_note=note, ref_note=_ref_note(), match_after=after,
+        match_result={"out_name": out_name}, error=None)
 
 
 @app.get("/file/<kind>/<name>")

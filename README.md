@@ -40,6 +40,7 @@ python app.py            # → http://127.0.0.1:5000
 # …or the command line
 python cli.py master input.wav out.wav --lufs -14 --preset warm
 python cli.py mix drums.wav bass.wav vocals.wav -o mix.wav --lufs -14 --preset clean
+python cli.py match mine.wav reference.wav -o matched.wav
 python cli.py analyze out.wav
 ```
 
@@ -47,6 +48,7 @@ python cli.py analyze out.wav
 - **Master** a finished mix to a loudness target (−14 / −9 / −16 LUFS) with
   true-peak limiting + an optional tone chain (`clean` / `warm` / `bright` / `loud`).
 - **Auto-mix** 2+ stems: loudness-balance each → sum on a headroom bus → master.
+- **Reference match**: make your track match the tone + loudness of a song you like.
 - **Analyze**: LUFS / true peak / dynamic range, before & after.
 - **Desktop app** (pywebview) and a browser app (Flask) over the same engine.
 
@@ -57,7 +59,7 @@ python cli.py analyze out.wav
 | **0 — Engine** | Loudness master + analysis | ffmpeg | ✅ |
 | **1 — Master chain** | EQ, compression, glue, limiter | `pedalboard` | ✅ presets |
 | **1b — Auto-mix v0** | Balance stems → bus → master | ffmpeg | ✅ |
-| **2 — Reference match** | Match a reference track's tone + loudness | `matchering` | next |
+| **2 — Reference match** | Match a reference track's tone + loudness | `matchering` | ✅ |
 | **3 — Desktop polish** | A/B, waveforms, batch, presets UI | pywebview | next |
 | **4 — Smarter mix** | Per-stem EQ / pan / role-aware balance | DSP + ML | later |
 
