@@ -1,140 +1,193 @@
 <!doctype html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mastr — studio-quality masters in seconds</title>
-<meta name="description" content="Upload your track and get a polished, streaming-ready master in seconds. Free to try.">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<title>Mastr — make your song sound radio-ready in seconds</title>
+<meta name="description" content="Upload your track and get a loud, clean, radio-ready master in seconds — or match the sound of any hit you love. Free to try. Built for independent artists.">
+<meta property="og:title" content="Mastr — make your song sound radio-ready">
+<meta property="og:description" content="Pro masters in seconds. Match the sound of any hit. Free to try.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0b121a;--bg2:#0e1622;--card:#13202e;--line:#21364a;--ink:#e7eef6;--muted:#8aa0b4;
+:root{--bg:#0a0f17;--bg2:#0e1622;--card:#13202e;--line:#21364a;--ink:#eaf1f8;--muted:#8aa0b4;
 --mint:#46d6a6;--amber:#f2b24b;--blue:#5ba9f4;--violet:#7c5cff}
 *{box-sizing:border-box}html{scroll-behavior:smooth}
-body{margin:0;background:radial-gradient(1000px 560px at 85% -10%,rgba(91,169,244,.12),transparent 60%),
- radial-gradient(800px 560px at 0% 110%,rgba(70,214,166,.09),transparent 60%),var(--bg);
- color:var(--ink);font-family:Inter,system-ui,sans-serif;line-height:1.5}
-.wrap{max-width:760px;margin:0 auto;padding:0 18px}
-nav{display:flex;align-items:center;gap:12px;padding:18px 0}
+body{margin:0;color:var(--ink);font-family:Inter,system-ui,sans-serif;line-height:1.55;
+ background:radial-gradient(1100px 600px at 85% -12%,rgba(124,92,255,.16),transparent 60%),
+ radial-gradient(820px 560px at -5% 108%,rgba(70,214,166,.10),transparent 60%),var(--bg)}
+.wrap{max-width:780px;margin:0 auto;padding:0 18px}
+nav{display:flex;align-items:center;gap:11px;padding:18px 0}
 .logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(140deg,var(--blue),var(--violet));display:grid;place-items:center;font-size:18px}
-nav b{font-size:16px}nav .cta{margin-left:auto;background:linear-gradient(140deg,var(--blue),var(--violet));color:#04101c;
+nav b{font-size:16px}nav .cta{margin-left:auto;background:linear-gradient(140deg,var(--blue),var(--violet));color:#06101c;
  font-weight:700;padding:9px 16px;border-radius:10px;text-decoration:none;font-size:14px}
-.hero{text-align:center;padding:48px 0 30px}
-.hero .pill{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.5px;color:var(--mint);
- background:rgba(70,214,166,.12);border:1px solid rgba(70,214,166,.25);padding:5px 12px;border-radius:99px;margin-bottom:18px}
-h1{font-size:40px;line-height:1.1;margin:0 0 14px;font-weight:800;letter-spacing:-.5px}
-h1 .grad{background:linear-gradient(90deg,var(--blue),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
-.hero p{font-size:18px;color:var(--muted);max-width:560px;margin:0 auto 26px}
-.btn{display:inline-block;background:linear-gradient(140deg,var(--blue),var(--violet));color:#04101c;font-weight:700;
- padding:14px 26px;border-radius:12px;text-decoration:none;font-size:16px;border:0;cursor:pointer}
-.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink)}
-.hero .sub{font-size:13px;color:var(--muted);margin-top:12px}
-section{padding:40px 0;border-top:1px solid var(--line)}
-h2{font-size:26px;margin:0 0 6px;text-align:center}.lead{color:var(--muted);text-align:center;margin:0 0 26px}
-.ab{display:grid;gap:16px}
+.hero{text-align:center;padding:46px 0 8px}
+.pill{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.6px;color:var(--mint);
+ background:rgba(70,214,166,.10);border:1px solid rgba(70,214,166,.28);padding:5px 13px;border-radius:99px;margin-bottom:18px}
+h1{font-size:44px;line-height:1.06;margin:0 0 16px;font-weight:900;letter-spacing:-1px}
+.grad{background:linear-gradient(90deg,var(--blue),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{font-size:18px;color:var(--muted);max-width:580px;margin:0 auto 26px}
+.btn{display:inline-block;background:linear-gradient(140deg,var(--blue),var(--violet));color:#06101c;font-weight:800;
+ padding:15px 28px;border-radius:12px;text-decoration:none;font-size:16px;border:0;cursor:pointer}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink);font-weight:700}
+.hero .sub{font-size:13px;color:var(--muted);margin-top:13px}
+section{padding:44px 0;border-top:1px solid var(--line)}
+h2{font-size:28px;margin:0 0 8px;text-align:center;letter-spacing:-.3px}
+.lead{color:var(--muted);text-align:center;margin:0 auto 26px;max-width:580px}
+.problem{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;font-size:17px;text-align:center}
+.problem b{color:var(--ink)}
+.ab{display:grid;gap:14px}
 .demo{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
-.demo .h{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.demo .h b{font-size:15px}.demo .h .g{font-size:11px;color:var(--muted)}
-.players{display:flex;gap:14px;flex-wrap:wrap}.players>div{flex:1;min-width:220px}
-.players label{font-size:11px;color:var(--muted);display:block;margin-bottom:5px;font-weight:600}
-.players label.aft{color:var(--mint)}
+.demo .h{display:flex;align-items:center;gap:10px;margin-bottom:10px}.demo .h b{font-size:15px}.demo .h .g{font-size:11px;color:var(--muted)}
+.players{display:flex;gap:14px;flex-wrap:wrap}.players>div{flex:1;min-width:210px}
+.players label{font-size:11px;color:var(--muted);display:block;margin-bottom:5px;font-weight:600}.players label.aft{color:var(--mint)}
 audio{width:100%}
+.feat{display:flex;gap:20px;align-items:center;flex-wrap:wrap;background:linear-gradient(140deg,rgba(124,92,255,.1),rgba(91,169,244,.06));
+ border:1px solid var(--line);border-radius:16px;padding:24px}
+.feat .ic{font-size:40px}.feat h3{margin:0 0 6px;font-size:20px}.feat p{margin:0;color:var(--muted)}
 .steps{display:flex;gap:14px;flex-wrap:wrap}
-.step{flex:1;min-width:180px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+.step{flex:1;min-width:170px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
 .step .n{width:30px;height:30px;border-radius:8px;background:rgba(91,169,244,.15);color:var(--blue);display:grid;place-items:center;font-weight:700;margin-bottom:10px}
 .step b{display:block;margin-bottom:4px}.step p{color:var(--muted);font-size:14px;margin:0}
+table.cmp{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+table.cmp th,table.cmp td{padding:13px 14px;text-align:left;font-size:14px;border-bottom:1px solid var(--line)}
+table.cmp th{color:var(--muted);font-weight:600;font-size:12px}
+table.cmp td:first-child{color:var(--muted)}table.cmp .us{color:var(--mint);font-weight:700}
+table.cmp tr:last-child td{border-bottom:0}
 .prices{display:flex;gap:16px;flex-wrap:wrap}
-.price{flex:1;min-width:220px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px}
+.price{flex:1;min-width:210px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;position:relative}
 .price.best{border-color:var(--blue);box-shadow:0 0 0 1px var(--blue)}
-.price .t{font-weight:700}.price .p{font-size:32px;font-weight:800;margin:8px 0}.price .p span{font-size:14px;color:var(--muted);font-weight:500}
-.price ul{list-style:none;padding:0;margin:14px 0;font-size:14px}.price li{padding:5px 0;color:var(--ink)}.price li::before{content:"✓ ";color:var(--mint);font-weight:700}
-.form{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;max-width:480px;margin:0 auto}
-.form input[type=email]{width:100%;padding:13px 14px;background:#0d1722;border:1px solid var(--line);border-radius:11px;color:var(--ink);font-size:15px;font-family:inherit}
+.price .badge{position:absolute;top:-11px;left:24px;background:var(--blue);color:#06101c;font-size:11px;font-weight:800;padding:3px 10px;border-radius:99px}
+.price .t{font-weight:700}.price .p{font-size:32px;font-weight:900;margin:8px 0}.price .p span{font-size:14px;color:var(--muted);font-weight:500}
+.price ul{list-style:none;padding:0;margin:14px 0;font-size:14px}.price li{padding:5px 0}.price li::before{content:"✓ ";color:var(--mint);font-weight:700}
+.faq{display:grid;gap:12px}
+.qa{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.qa b{display:block;margin-bottom:5px}.qa p{margin:0;color:var(--muted);font-size:14px}
+.founder{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;font-size:15px;color:var(--muted)}
+.founder b{color:var(--ink)}
+.form{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;max-width:500px;margin:0 auto}
+.form input[type=email],.form input[type=text]{width:100%;padding:13px 14px;background:#0d1722;border:1px solid var(--line);border-radius:11px;color:var(--ink);font-size:15px;font-family:inherit}
 .form .q{font-size:13px;color:var(--muted);margin:16px 0 8px}
 .opts{display:flex;flex-direction:column;gap:8px}
 .opts label{display:flex;align-items:center;gap:9px;background:#0d1722;border:1px solid var(--line);border-radius:10px;padding:11px 13px;font-size:14px;cursor:pointer}
 .opts input{accent-color:var(--blue)}
-.form button{width:100%;margin-top:16px}
-.fine{font-size:12px;color:var(--muted);text-align:center;margin-top:10px}
+.form button{width:100%;margin-top:16px}.fine{font-size:12px;color:var(--muted);text-align:center;margin-top:10px}
 footer{text-align:center;color:var(--muted);font-size:13px;padding:30px 0}
-.banner{background:rgba(242,178,75,.1);border:1px solid rgba(242,178,75,.3);color:var(--amber);font-size:12.5px;
- border-radius:10px;padding:10px 14px;margin:14px auto 0;max-width:760px}
+.banner{background:rgba(242,178,75,.1);border:1px solid rgba(242,178,75,.3);color:var(--amber);font-size:12.5px;border-radius:10px;padding:10px 14px;margin:14px auto 0;max-width:780px}
+@media(max-width:560px){h1{font-size:34px}}
 </style></head><body>
 <div class="wrap">
-  <nav><div class="logo">🎚️</div><b>Mastr</b><a class="cta" href="#waitlist">Get early access</a></nav>
-
+  <nav><div class="logo">🎚️</div><b>Mastr</b><a class="cta" href="#waitlist">Try it free</a></nav>
   <header class="hero">
-    <span class="pill">FOR INDEPENDENT ARTISTS &amp; PRODUCERS</span>
-    <h1>Make your track sound <span class="grad">finished</span> — in seconds.</h1>
-    <p>Upload your mix and get a polished, streaming-ready master. No plugins, no engineer,
-       no guesswork. Just the loud, clean, pro sound your music deserves.</p>
-    <a class="btn" href="#waitlist">Get early access — free</a>
-    <div class="sub">Free to try · master for Spotify, SoundCloud, YouTube &amp; more</div>
+    <span class="pill">FOR INDEPENDENT RAP · R&amp;B · POP ARTISTS</span>
+    <h1>Make your song sound like it<br><span class="grad">belongs on the playlist.</span></h1>
+    <p>Upload your track → get a loud, clean, radio-ready master in seconds. Or match the
+       exact sound of any hit you love. No engineer, no waiting, no £50 a song.</p>
+    <a class="btn" href="#waitlist">Master my song — free</a>
+    <div class="sub">Ready for Spotify, Apple Music, YouTube &amp; TikTok</div>
   </header>
 </div>
 
-<div class="banner wrap">⚙️ This is a validation page — replace the demo audio in <b>landing/demo/</b> and set your form action before sharing. See docs/validation.md.</div>
+<div class="banner wrap">⚙️ Validation page — add real before/after clips in <b>landing/demo/</b> and set the form action before sharing. See docs/validation.md, then delete this line.</div>
 
 <div class="wrap">
   <section>
-    <h2>Hear the difference</h2>
-    <p class="lead">Before vs after — same track, one click apart.</p>
+    <div class="problem">You spent weeks on the song. Then you play it right after a track on Spotify and… yours is
+      <b>quieter, muddier, smaller</b>. That gap isn't your talent — it's <b>mastering</b>, the final polish studios
+      hide behind expensive engineers. <b>Mastr gives it to you instantly.</b></div>
+  </section>
+
+  <section>
+    <h2>Hear it for yourself</h2>
+    <p class="lead">Same song. One click apart. Turn it up.</p>
     <div class="ab">
-      <div class="demo"><div class="h"><b>Demo 1</b><span class="g">— add your own in landing/demo/</span></div>
+      <div class="demo"><div class="h"><b>Before → After</b><span class="g">add your own clips in landing/demo/</span></div>
         <div class="players">
-          <div><label>Before</label><audio controls preload="none" src="demo/demo1-before.mp3"></audio></div>
-          <div><label class="aft">After · Mastr</label><audio controls preload="none" src="demo/demo1-after.mp3"></audio></div>
+          <div><label>Your mix</label><audio controls preload="none" src="demo/demo1-before.mp3"></audio></div>
+          <div><label class="aft">Mastered with Mastr</label><audio controls preload="none" src="demo/demo1-after.mp3"></audio></div>
         </div></div>
-      <div class="demo"><div class="h"><b>Demo 2</b><span class="g">— a different genre works too</span></div>
+      <div class="demo"><div class="h"><b>Another track</b><span class="g">any genre</span></div>
         <div class="players">
-          <div><label>Before</label><audio controls preload="none" src="demo/demo2-before.mp3"></audio></div>
-          <div><label class="aft">After · Mastr</label><audio controls preload="none" src="demo/demo2-after.mp3"></audio></div>
+          <div><label>Your mix</label><audio controls preload="none" src="demo/demo2-before.mp3"></audio></div>
+          <div><label class="aft">Mastered with Mastr</label><audio controls preload="none" src="demo/demo2-after.mp3"></audio></div>
         </div></div>
     </div>
   </section>
 
   <section>
-    <h2>How it works</h2>
-    <p class="lead">Three steps. No knobs to learn.</p>
+    <div class="feat"><div class="ic">🎯</div><div>
+      <h3>Sound like the records you love</h3>
+      <p>Drop in a reference — a song whose sound you're chasing — and Mastr matches its tone and loudness on your track.
+         That major-label polish, on a bedroom budget.</p></div></div>
+  </section>
+
+  <section>
+    <h2>Three steps. No knobs to learn.</h2>
     <div class="steps">
-      <div class="step"><div class="n">1</div><b>Upload</b><p>Drop in your mix (WAV or MP3).</p></div>
-      <div class="step"><div class="n">2</div><b>We master it</b><p>Loudness, tone, and true-peak — set for streaming automatically.</p></div>
-      <div class="step"><div class="n">3</div><b>Download</b><p>Get your finished master in seconds, with the numbers to prove it.</p></div>
+      <div class="step"><div class="n">1</div><b>Upload</b><p>Drop your mix (WAV or MP3).</p></div>
+      <div class="step"><div class="n">2</div><b>We master it</b><p>Loudness, tone &amp; true-peak — set for streaming automatically.</p></div>
+      <div class="step"><div class="n">3</div><b>Download</b><p>Your finished, release-ready master in seconds.</p></div>
     </div>
   </section>
 
   <section>
-    <h2>Simple pricing</h2>
-    <p class="lead">Start free. Upgrade when you're shipping music.</p>
+    <h2>The maths is simple</h2>
+    <p class="lead">What artists pay today vs Mastr.</p>
+    <table class="cmp">
+      <tr><th></th><th>Freelance engineer</th><th>Studio</th><th>Mastr</th></tr>
+      <tr><td>Cost per song</td><td>£30–80</td><td>£100s</td><td class="us">£1 (or £6/mo unlimited)</td></tr>
+      <tr><td>Turnaround</td><td>2–5 days</td><td>1–2 weeks</td><td class="us">Seconds</td></tr>
+      <tr><td>Revisions</td><td>paid</td><td>paid</td><td class="us">Unlimited, instant</td></tr>
+      <tr><td>Match a reference hit</td><td>maybe</td><td>maybe</td><td class="us">Built in</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>Pricing</h2>
+    <p class="lead">Start free. Pay only when you're releasing.</p>
     <div class="prices">
       <div class="price"><div class="t">Free</div><div class="p">£0</div>
-        <ul><li>3 masters</li><li>MP3 preview</li><li>Loudness + true-peak</li></ul>
+        <ul><li>3 masters</li><li>Preview export</li><li>Loudness + true-peak</li></ul>
         <a class="btn ghost" href="#waitlist" style="display:block;text-align:center">Start free</a></div>
-      <div class="price best"><div class="t">Pro</div><div class="p">£6<span>/mo</span></div>
+      <div class="price best"><div class="badge">MOST POPULAR</div><div class="t">Pro</div><div class="p">£6<span>/mo</span></div>
         <ul><li>Unlimited masters</li><li>High-quality WAV</li><li>Reference matching</li><li>Stem auto-mix</li></ul>
         <a class="btn" href="#waitlist" style="display:block;text-align:center">Get early access</a></div>
-      <div class="price"><div class="t">Pay per track</div><div class="p">£1<span>/track</span></div>
-        <ul><li>No subscription</li><li>Full-quality WAV</li><li>Pay only when you release</li></ul>
+      <div class="price"><div class="t">Pay per track</div><div class="p">£1<span>/song</span></div>
+        <ul><li>No subscription</li><li>Full-quality WAV</li><li>Pay only on release</li></ul>
         <a class="btn ghost" href="#waitlist" style="display:block;text-align:center">Notify me</a></div>
     </div>
   </section>
 
+  <section>
+    <h2>Honest answers</h2>
+    <div class="faq">
+      <div class="qa"><b>Is it as good as a real engineer?</b><p>For most releases — yes. It nails the things that actually matter: loudness, tone balance, and true-peak safety, set to streaming standards. A top engineer still wins on big creative calls, but for the price and speed, nothing comes close.</p></div>
+      <div class="qa"><b>Do you keep or sell my music?</b><p>Never. Your music is 100% yours. Files are processed and then deleted — we don't sell them, share them, or train anything on them. That's a promise, not fine print.</p></div>
+      <div class="qa"><b>Will it sound distorted or too loud?</b><p>No. Every master is true-peak limited, so it's loud and clean — never crunchy or clipped.</p></div>
+      <div class="qa"><b>What files can I use?</b><p>WAV, MP3, FLAC in. WAV or MP3 out.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="founder">“I'm building Mastr because mastering shouldn't be gatekept behind expensive studios.
+      If you can make a great song in your bedroom, you should be able to make it <b>sound</b> great too —
+      instantly, for the price of a coffee. Join early and help shape it.”<br><br>— <b>Kuldeep</b>, founder</div>
+  </section>
+
   <section id="waitlist">
     <h2>Get early access</h2>
-    <p class="lead">Leave your email — be first in when it opens, and help shape it.</p>
+    <p class="lead">Drop your email — be first in when it opens, and lock in early pricing.</p>
     <!-- VALIDATION: replace action with your Formspree (or similar) endpoint -->
     <form class="form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
       <input type="email" name="email" placeholder="you@email.com" required>
       <div class="q">Would you pay for this?</div>
       <div class="opts">
         <label><input type="radio" name="willing_to_pay" value="free_only"> Only if it's free</label>
-        <label><input type="radio" name="willing_to_pay" value="per_track"> Yes — £1 per track</label>
-        <label><input type="radio" name="willing_to_pay" value="subscription"> Yes — £6/month</label>
+        <label><input type="radio" name="willing_to_pay" value="per_track"> Yes — £1 per song</label>
+        <label><input type="radio" name="willing_to_pay" value="subscription"> Yes — £6/month unlimited</label>
       </div>
-      <div class="q">What do you make? (optional)</div>
-      <input type="text" name="what_you_make" placeholder="e.g. lo-fi, rap, podcast, electronic"
-        style="width:100%;padding:12px 14px;background:#0d1722;border:1px solid var(--line);border-radius:11px;color:var(--ink);font-family:inherit">
+      <div class="q">What do you make? (helps me tune it for you)</div>
+      <input type="text" name="what_you_make" placeholder="e.g. rap, R&B, afrobeats, pop, beats">
       <button class="btn" type="submit">Join the waitlist</button>
-      <div class="fine">No spam. Just one email when it's ready.</div>
+      <div class="fine">No spam — one email when it's ready.</div>
     </form>
   </section>
 </div>
-
-<footer>Mastr · auto mix &amp; master · made by an indie builder</footer>
+<footer>Mastr · pro masters in seconds · built by an indie artist-builder</footer>
 </body></html>
