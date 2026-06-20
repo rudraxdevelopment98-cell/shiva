@@ -15,6 +15,11 @@ venv/
 out/
 renders/
 
+# …but DO commit the landing-page demo audio (needed for the live site)
+!landing/demo/
+!landing/demo/*.mp3
+!landing/demo/*.wav
+
 # OS / editor
 .DS_Store
 .idea/
