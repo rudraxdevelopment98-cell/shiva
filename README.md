@@ -1,75 +1,47 @@
-# 🎚️ Auto Mix & Master
+# 🎵 Music projects — monorepo
 
-> Working title: **Mastr** (name TBD). Owner: Kuldeep · Solo build.
-> An automatic **mixing & mastering** tool — drop in a track (or stems) and get
-> back a polished, loudness-correct master, with clear before/after metrics.
+Three independent music-tech projects, kept in one repo while exploring. Each is
+self-contained; pick a folder and go. (When one gets serious, split it into its
+own repo.)
 
-This repo was reset from a previous project. Fresh start.
+| Project | What it is | Status | Run |
+|---|---|---|---|
+| **[Auto Mix & Master](#auto-mix--master)** | Upload → polished, loud, streaming-ready master; auto-mix stems; reference match | Working + web product + landing page | `python app.py` |
+| **[Hum → Instrument](hum2inst/README.md)** | Hum a line → clean, in-key MIDI instrument part | Working engine + Hum Studio app | `python hum_app.py` |
+| **[SonicDNA](sonicdna/README.md)** | Upload → Emotional DNA + timeline heatmap + features | Web MVP (heuristic emotion model) | `uvicorn main:app` in `sonicdna/backend` |
+
+Prereqs across all: `brew install ffmpeg`, Python 3.11+.
 
 ---
 
-## What we're building
-
-A tool that takes raw audio and makes it sound finished — automatically:
-
-- **Auto-master (first):** a finished stereo mix → a clean master at a chosen
-  streaming loudness target (e.g. −14 LUFS), with true-peak limiting, gentle
-  tonal balance, and a before/after report (LUFS, true peak, dynamic range).
-- **Reference match (next):** "make my track sound like *this* reference."
-- **Auto-mix (later):** balance multiple stems (levels, panning, EQ, glue).
-
-The hard part — and the value — is the **audio engine**. UI comes on top of it.
-
-## Engine MVP (in this repo)
-
-`engine/` is a Python audio engine. The v0 master uses a **two-pass EBU R128
-loudnorm** (via ffmpeg) — a real, robust master for loudness + true-peak
-control — plus an analysis pass that reports the numbers.
-
+## Auto Mix & Master
+Auto **mastering**, stem **auto-mix**, and **reference matching**, with before/after
+LUFS · true-peak · dynamics. Engine in `engine/`; apps: `app.py` (web product with
+freemium gate), `desktop.py` (native), `cli.py`. Validation kit in `landing/` +
+`docs/validation.md`; monetization plan in `docs/monetization.md`.
 ```bash
-# on your Mac (one-time)
-brew install ffmpeg
-pip install -r requirements.txt
-
-# Desktop app (native window) — the main way to use it
-python desktop.py
-
-# …or the same UI in a browser
-python app.py            # → http://127.0.0.1:5000
-
-# …or the command line
-python cli.py master input.wav out.wav --lufs -14 --preset warm
-python cli.py mix drums.wav bass.wav vocals.wav -o mix.wav --lufs -14 --preset clean
-python cli.py match mine.wav reference.wav -o matched.wav
-python cli.py analyze out.wav
+pip install -r requirements.txt   # flask, pywebview, pedalboard, matchering
+python app.py                     # http://127.0.0.1:5000
+python cli.py master in.wav out.wav --lufs -14 --preset warm
 ```
 
-## What works now
-- **Master** a finished mix to a loudness target (−14 / −9 / −16 LUFS) with
-  true-peak limiting + an optional tone chain (`clean` / `warm` / `bright` / `loud`).
-- **Auto-mix** 2+ stems: loudness-balance each → sum on a headroom bus → master.
-- **Reference match**: make your track match the tone + loudness of a song you like.
-- **Analyze**: LUFS / true peak / dynamic range, before & after.
-- **Desktop app** (pywebview) and a browser app (Flask) over the same engine.
-- **Web product**: single-page Master / Mix / Reference flow with drag-and-drop,
-  live metrics, and a freemium gate (3 free renders → paywall). Making payments
-  real (accounts + Stripe + server-side limits): see [`docs/monetization.md`](docs/monetization.md).
+## Hum → Instrument  → [`hum2inst/`](hum2inst/README.md)
+Hum/sing → transcribe → quantize to BPM → snap to key → MIDI (+ audio preview).
+Concept & plan: [`docs/hum-to-instrument.md`](docs/hum-to-instrument.md).
+```bash
+pip install -r hum2inst/requirements.txt flask
+python hum_app.py                 # http://127.0.0.1:5005  (record → generate → hear → save MIDI)
+```
 
-## Roadmap
+## SonicDNA  → [`sonicdna/`](sonicdna/README.md)
+Emotion analysis platform (blueprint + runnable web MVP). Real DSP features +
+valence/arousal emotion model + timeline heatmap. Full PRD/architecture/schema/
+API/roadmap in [`sonicdna/docs/`](sonicdna/docs/).
+```bash
+cd sonicdna/backend && pip install -r requirements.txt
+uvicorn main:app --reload         # http://127.0.0.1:8000
+```
 
-| Phase | What | Tech | State |
-|---|---|---|---|
-| **0 — Engine** | Loudness master + analysis | ffmpeg | ✅ |
-| **1 — Master chain** | EQ, compression, glue, limiter | `pedalboard` | ✅ presets |
-| **1b — Auto-mix v0** | Balance stems → bus → master | ffmpeg | ✅ |
-| **2 — Reference match** | Match a reference track's tone + loudness | `matchering` | ✅ |
-| **3 — Desktop polish** | A/B, waveforms, batch, presets UI | pywebview | next |
-| **4 — Smarter mix** | Per-stem EQ / pan / role-aware balance | DSP + ML | later |
-
-## Why Python for the engine
-Audio DSP/ML lives in Python: `pedalboard`, `matchering`, `pyloudnorm`,
-`soundfile`, `librosa`, plus `ffmpeg` for I/O. The engine stays UI-agnostic so
-we can put a CLI, a web app, or a desktop app on top of the same core.
-
-## Status
-Phase 0 scaffold. See [`docs/plan.md`](docs/plan.md).
+---
+*Solo builder note: three fronts is a lot — when you're ready to push one hard,
+split it out and give it its own repo + focus.*
